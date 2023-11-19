@@ -1,4 +1,6 @@
+// Path: /signup
 // Signup Page
+// Render the signup form, if already logged in, redirect to dashboard
 "use client"
 
 // Imports
@@ -144,9 +146,9 @@ export default function Signup() {
 
                 {/* Seperator */}
                 <div className="flex mt-8">
-                    <div className="flex-1 border-b border-gray-300"></div>
-                    <p className="mx-2 text-sm text-gray-700">or</p>
-                    <div className="flex-1 border-b border-gray-300"></div>
+                    <div className="flex-1 border-b border-[#b6a896]"></div>
+                    <p className="mx-2 text-sm text-[#b6a896]">or</p>
+                    <div className="flex-1 border-b border-[#b6a896]"></div>
                 </div>
 
                 {/* Google Sign in */}
@@ -158,7 +160,7 @@ export default function Signup() {
                     onClick={() => handleGoogleLogin()}
                 />
 
-                <p className="text-gray-700 text-sm text-center mt-4">
+                <p className="text-[#b6a896] text-sm text-center mt-4">
                     Already have an account?{" "}
                     <Link
                         href="/"

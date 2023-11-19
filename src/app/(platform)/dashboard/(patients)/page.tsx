@@ -1,28 +1,41 @@
+// Path: /dashboard
 // Patients View Dashboard Page
 // Description: Page for the patients view on the dashboard, display table of patients
-"use client"
-
-// Imports
-import { useEffect } from "react"
-import { redirect } from "next/navigation"
 
 // Import hooks and components
-import Loading from "@/components/Loading"
-import { useAuth } from "@/contexts/AuthContext"
-import { auth } from "@/lib/firebase"
+import { Payment, columns } from "./columns"
+import { DataTable } from "./data-table"
 
-export default function Patients() {
-    // Get auth context
-    const { loading, currentUser } = useAuth()
+// Function to get data from API
+async function getData(): Promise<Payment[]> {
+    // Fetch data from your API here.
+    return [
+        {
+            id: "728ed52f",
+            amount: 100,
+            status: "pending",
+            email: "m@example.com",
+        },
+        // ...
+    ]
+}
 
-    // Redirect to login if not logged in
-    useEffect(() => {
-        if (!loading && !currentUser) return redirect("/")
-    }, [loading, currentUser])
+// Patients Page
+export default async function Patients() {
+    // Pull data from API
+    const data = await getData()
 
-    // Display loading component while authentication state is being determined
-    if (loading) return <Loading />
+    // Return Patients Page
+    return (
+        <div className="flex-1">
+            <div className="flex flex-row space-x-2">
+                <h1 className="text-4xl font-bold">Patients</h1>
+            </div>
+            <p className="text-[#b6a896]">Manage your patients data.</p>
 
-    // Return Patients
-    return <div></div>
+            <div className="py-8">
+                <DataTable columns={columns} data={data} />
+            </div>
+        </div>
+    )
 }

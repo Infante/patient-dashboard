@@ -11,5 +11,5 @@ export default function handler(
 ) {
     return res
         .status(200)
-        .json({ success: true, message: "Hello from Next.js!" })
+        .json({ success: true, message: "Hello from Finni Api" })
 }

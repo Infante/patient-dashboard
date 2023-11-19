@@ -1,5 +1,7 @@
+// Layout for all routes on the platform
+// Setup global styles, fonts and metadata
+
 // Imports
-import { Toaster } from "react-hot-toast"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -22,7 +24,6 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>{children}</body>
-            <Toaster />
         </html>
     )
 }

@@ -1,4 +1,6 @@
+// Path: /forgot-password
 // ForgotPassword Page
+// Render the forgot password form, if already logged in, redirect to dashboard
 "use client"
 
 // Imports
@@ -100,7 +102,7 @@ export default function ForgotPassword() {
                 />
 
                 {/* Sign in link */}
-                <p className="text-gray-700 text-sm text-center mt-4">
+                <p className="text-[#b6a896] text-sm text-center mt-4">
                     <Link
                         href="/"
                         className="text-[#ED762F] cursor-pointer underline hover:opacity-70"

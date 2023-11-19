@@ -32,14 +32,6 @@ export default function Layout({ children }) {
 
     return (
         <>
-            {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
             <Disclosure as="nav" className="bg-[#141414]">
                 {({ open }) => (
                     <>
@@ -208,7 +200,9 @@ export default function Layout({ children }) {
                 )}
             </Disclosure>
 
-            <div className="max-w-7xl p-8 mx-auto">{children}</div>
+            <div className="flex max-w-7xl py-12 px-4 sm:px-6 lg:px-8 mx-auto">
+                {children}
+            </div>
         </>
     )
 }

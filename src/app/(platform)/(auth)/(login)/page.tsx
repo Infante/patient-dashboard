@@ -1,4 +1,6 @@
+// Path: /
 // Login Page
+// Render the login form, if already logged in, redirect to dashboard
 "use client"
 
 // Imports
@@ -125,7 +127,7 @@ export default function Login() {
                 {/* Forgot password */}
                 <Link
                     href="/forgot-password"
-                    className="mt-2 text-sm text-gray-700 underline"
+                    className="mt-2 text-sm text-[#b6a896] underline"
                 >
                     Forgot your password?
                 </Link>
@@ -141,7 +143,7 @@ export default function Login() {
                 {/* Seperator */}
                 <div className="flex mt-8">
                     <div className="flex-1 border-b border-gray-300"></div>
-                    <p className="mx-2 text-sm text-gray-700">or</p>
+                    <p className="mx-2 text-sm text-[#b6a896]">or</p>
                     <div className="flex-1 border-b border-gray-300"></div>
                 </div>
 
@@ -155,7 +157,7 @@ export default function Login() {
                 />
 
                 {/* Sign up link */}
-                <p className="text-gray-700 text-sm text-center mt-4">
+                <p className="text-[#b6a896] text-sm text-center mt-4">
                     Don't have an account?{" "}
                     <Link
                         href="/signup"
