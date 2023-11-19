@@ -39,12 +39,7 @@ export default function Login() {
     const handleLogin = async () => {
         try {
             setSubmitting(true)
-            const userCredential = await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            )
-            console.log(userCredential)
+            await signInWithEmailAndPassword(auth, email, password)
         } catch (error: any) {
             setSubmitting(false)
             // Firebase error handler
@@ -90,7 +85,7 @@ export default function Login() {
 
     // Rendering the login form
     return (
-        <div className="h-screen flex justify-center items-center p-8">
+        <div className="bg-[url('/background.svg')] bg-fixed bg-center bg-cover h-screen flex justify-center items-center p-8">
             <form
                 onSubmit={(e) => {
                     e.preventDefault()

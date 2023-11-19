@@ -27,10 +27,6 @@ export const AuthProvider = ({ children }) => {
         return unsubscribe
     }, [])
 
-    useEffect(() => {
-        console.log(currentUser?.email)
-    }, [currentUser])
-
     const value = {
         currentUser,
         loading,

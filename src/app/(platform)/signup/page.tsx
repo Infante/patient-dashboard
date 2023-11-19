@@ -87,7 +87,7 @@ export default function Signup() {
 
     // Rending signup form
     return (
-        <main className="h-screen flex justify-center items-center">
+        <main className="bg-[url('/background.svg')] bg-fixed bg-center bg-cover h-screen flex justify-center items-center">
             <form
                 onSubmit={(e) => {
                     e.preventDefault()

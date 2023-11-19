@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 // Set metadata for app
 export const metadata: Metadata = {
-    title: "Finni Portal",
+    title: "Finni Demo",
     description:
         "Finni Health provides world class ABA services near you. We help ease the entire process of ASD, from start to finni!",
     themeColor: "#e66e32",

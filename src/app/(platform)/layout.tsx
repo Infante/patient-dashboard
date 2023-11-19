@@ -10,9 +10,9 @@ export default function PlatformLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en">
+        <>
             {/* Wrap body in auth context */}
             <AuthProvider>{children}</AuthProvider>
-        </html>
+        </>
     )
 }

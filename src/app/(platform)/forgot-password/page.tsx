@@ -65,7 +65,7 @@ export default function ForgotPassword() {
 
     // Rendering forgot password form
     return (
-        <div className="h-screen flex justify-center items-center p-8">
+        <div className="bg-[url('/background.svg')] bg-fixed bg-center bg-cover h-screen flex justify-center items-center p-8">
             <form
                 onSubmit={(e) => {
                     e.preventDefault()
