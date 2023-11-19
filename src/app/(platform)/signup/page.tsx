@@ -2,12 +2,15 @@
 "use client"
 
 // Imports
-import { redirect } from "next/navigation"
-import { useEffect } from "react"
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import {
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+} from "firebase/auth"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { redirect } from "next/navigation"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { FaGoogle } from "react-icons/fa"
 
@@ -70,6 +73,13 @@ export default function Signup() {
                 }
             }
         }
+    }
+
+    // Function to handle Google login
+    const handleGoogleLogin = async () => {
+        const provider = new GoogleAuthProvider()
+        provider.setCustomParameters({ prompt: "select_account" })
+        signInWithPopup(auth, provider)
     }
 
     // Display loading component while authentication state is being determined
@@ -145,7 +155,7 @@ export default function Signup() {
                     text="Sign up with Google"
                     type="secondary"
                     icon={<FaGoogle className="mr-2" size={14} />}
-                    // onClick={() => console.log("Sign in with Google")}
+                    onClick={() => handleGoogleLogin()}
                 />
 
                 <p className="text-gray-700 text-sm text-center mt-4">

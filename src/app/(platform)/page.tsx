@@ -8,7 +8,11 @@ import { redirect } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { FaGoogle } from "react-icons/fa"
-import { signInWithEmailAndPassword } from "firebase/auth"
+import {
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+} from "firebase/auth"
 
 // Import hooks and components
 import { auth } from "@/lib/firebase"
@@ -70,6 +74,13 @@ export default function Login() {
                 toast.error("Error signing in. Please try again.")
             }
         }
+    }
+
+    // Function to handle Google login
+    const handleGoogleLogin = async () => {
+        const provider = new GoogleAuthProvider()
+        provider.setCustomParameters({ prompt: "select_account" })
+        signInWithPopup(auth, provider)
     }
 
     // Display loading component while authentication state is being determined
@@ -144,7 +155,7 @@ export default function Login() {
                     classes="mt-8"
                     text="Sign in with Google"
                     type="secondary"
-                    // onClick={() => console.log("Continue with Google")}
+                    onClick={() => handleGoogleLogin()}
                     icon={<FaGoogle className="mr-2" size={14} />}
                 />
 

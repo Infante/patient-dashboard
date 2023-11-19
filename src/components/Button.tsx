@@ -17,14 +17,14 @@ const Button = ({
     classes,
     text,
     type,
-    // onClick,
+    onClick,
     icon,
     loading = false,
 }: {
     classes: string
     text: string
     type: "primary" | "secondary"
-    // onClick: () => void
+    onClick?: () => void
     icon?: JSX.Element
     loading?: boolean
 }) => {
@@ -43,8 +43,8 @@ const Button = ({
             items-center
         `}
             disabled={loading}
-            type="submit"
-            // onClick={onClick}
+            type={type === "primary" ? "submit" : "button"}
+            onClick={onClick}
         >
             {icon && <span className="mr-2">{icon}</span>}
             {text}
