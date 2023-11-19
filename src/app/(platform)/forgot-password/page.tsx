@@ -1,4 +1,4 @@
-// Login Page
+// ForgotPassword Page
 "use client"
 
 // Imports
@@ -7,8 +7,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { FaGoogle } from "react-icons/fa"
-import { signInWithEmailAndPassword } from "firebase/auth"
+import { sendPasswordResetEmail } from "firebase/auth"
 
 // Import hooks and components
 import { auth } from "@/lib/firebase"
@@ -17,13 +16,12 @@ import Button from "@/components/Button"
 import Input from "@/components/Input"
 import Loading from "@/components/Loading"
 
-export default function Login() {
+export default function ForgotPassword() {
     // Accessing authentication context
     const { loading, currentUser } = useAuth()
 
     // State declarations for user input and form submission status
     const [email, setEmail] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
     const [submitting, setSubmitting] = useState<boolean>(false)
 
     // Redirect to dashboard if logged in
@@ -31,16 +29,13 @@ export default function Login() {
         if (!loading && currentUser) return redirect("/dashboard")
     }, [loading, currentUser])
 
-    // Function to handle user login
-    const handleLogin = async () => {
+    // Function to handle password reset
+    const handlePasswordReset = async () => {
         try {
             setSubmitting(true)
-            const userCredential = await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            )
-            console.log(userCredential)
+            await sendPasswordResetEmail(auth, email)
+            toast.success("Password reset email sent.")
+            setSubmitting(false)
         } catch (error: any) {
             setSubmitting(false)
             // Firebase error handler
@@ -50,24 +45,15 @@ export default function Login() {
                     case "auth/user-not-found":
                         toast.error("No user found with this email.")
                         break
-                    case "auth/invalid-login-credentials":
-                        toast.error("Invalid login credentials.")
-                        break
-                    case "auth/wrong-password":
-                        toast.error("Incorrect password. Please try again.")
+                    case "auth/invalid-email":
+                        toast.error("Invalid email.")
                         break
                     case "auth/network-request-failed":
-                        toast.error(
-                            "Network error. Please check your connection."
-                        )
+                        toast.error("Network error. Please try again.")
                         break
-                    // Add more cases as needed for different error codes
                     default:
-                        toast.error("Error signing in. Please try again.")
+                        toast.error(error.message)
                 }
-            } else {
-                // Fallback error message
-                toast.error("Error signing in. Please try again.")
             }
         }
     }
@@ -77,13 +63,13 @@ export default function Login() {
         return <Loading></Loading>
     }
 
-    // Rendering the login form
+    // Rendering forgot password form
     return (
         <div className="h-screen flex justify-center items-center p-8">
             <form
                 onSubmit={(e) => {
                     e.preventDefault()
-                    handleLogin()
+                    handlePasswordReset()
                 }}
                 className="max-w-md flex-1 flex flex-col"
             >
@@ -105,57 +91,21 @@ export default function Login() {
                     required
                 />
 
-                {/* Password input */}
-                <Input
-                    classes="mt-4"
-                    name="Password"
-                    placeholder="Password"
-                    type="password"
-                    value={password}
-                    setValue={setPassword}
-                    required
-                />
-
-                {/* Forgot password */}
-                <Link
-                    href="/forgot-password"
-                    className="mt-2 text-sm text-gray-700 underline"
-                >
-                    Forgot your password?
-                </Link>
-
-                {/* Sign in button */}
+                {/* Submit reset button */}
                 <Button
                     classes="mt-4"
-                    text="Sign in"
+                    text="Reset password"
                     type="primary"
                     loading={submitting}
                 />
 
-                {/* Seperator */}
-                <div className="flex mt-8">
-                    <div className="flex-1 border-b border-gray-300"></div>
-                    <p className="mx-2 text-sm text-gray-700">or</p>
-                    <div className="flex-1 border-b border-gray-300"></div>
-                </div>
-
-                {/* Google Sign in */}
-                <Button
-                    classes="mt-8"
-                    text="Sign in with Google"
-                    type="secondary"
-                    // onClick={() => console.log("Continue with Google")}
-                    icon={<FaGoogle className="mr-2" size={14} />}
-                />
-
-                {/* Sign up link */}
+                {/* Sign in link */}
                 <p className="text-gray-700 text-sm text-center mt-4">
-                    Don't have an account?{" "}
                     <Link
-                        href="/signup"
+                        href="/"
                         className="text-[#ED762F] cursor-pointer underline hover:opacity-70"
                     >
-                        Sign up
+                        Sign in
                     </Link>
                 </p>
             </form>

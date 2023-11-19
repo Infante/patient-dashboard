@@ -43,14 +43,11 @@ export default function Signup() {
                 email,
                 password
             )
-            console.log(userCredential)
+            toast.success("Account created successfully.")
         } catch (error: any) {
             setSubmitting(false)
             // Firebase error handler
             if (error.code && error.message) {
-                // Log the error code for debugging purposes
-                console.log("Firebase error code:", error.code)
-
                 // Display a more user-friendly message based on the error code
                 switch (error.code) {
                     case "auth/email-already-in-use":
