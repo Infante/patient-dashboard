@@ -1,4 +1,3 @@
-// Path: /components/StatusFilter.tsx
 // Description: This component provides a status filter for the data table.
 // It uses a popover to display a list of statuses which can be selected to filter the table data.
 "use client"

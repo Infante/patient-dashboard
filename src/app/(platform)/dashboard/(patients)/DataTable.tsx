@@ -103,7 +103,7 @@ export function DataTable({
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Search patients..."
+                    placeholder="Search Patients..."
                     value={
                         (table.getColumn("name")?.getFilterValue() as string) ??
                         ""
@@ -119,7 +119,8 @@ export function DataTable({
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto bg-white">
-                            Columns <ChevronDown className="ml-2 h-4 w-4" />
+                            Shown Columns{" "}
+                            <ChevronDown className="ml-2 h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
