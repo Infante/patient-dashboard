@@ -155,8 +155,6 @@ export const columns: ColumnDef<Patient>[] = [
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-">
                             <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                            <p>edit</p>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">

@@ -8,6 +8,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Fragment } from "react"
+import Link from "next/link"
 
 // Import hooks and components
 import { useAuth } from "@/contexts/AuthContext"
@@ -49,7 +50,7 @@ export default function Layout({ children }) {
                                     <div className="hidden md:block">
                                         <div className="ml-10 flex items-baseline space-x-4">
                                             {navigation.map((item) => (
-                                                <a
+                                                <Link
                                                     key={item.name}
                                                     href={item.href}
                                                     className={classNames(
@@ -65,7 +66,7 @@ export default function Layout({ children }) {
                                                     }
                                                 >
                                                     {item.name}
-                                                </a>
+                                                </Link>
                                             ))}
                                         </div>
                                     </div>
@@ -104,6 +105,7 @@ export default function Layout({ children }) {
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <a
+                                                                href="#"
                                                                 className={classNames(
                                                                     active
                                                                         ? "bg-gray-100"

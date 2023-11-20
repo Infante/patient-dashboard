@@ -23,7 +23,7 @@ const Input = ({
     type,
     required = false,
 }: {
-    classes: string
+    classes?: string
     name: string
     value: string
     setValue: (value: string) => void
