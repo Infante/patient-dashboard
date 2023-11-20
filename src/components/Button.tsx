@@ -21,7 +21,7 @@ const Button = ({
     icon,
     loading = false,
 }: {
-    classes: string
+    classes?: string
     text: string
     type: "primary" | "secondary"
     onClick?: () => void
@@ -31,7 +31,9 @@ const Button = ({
     return (
         <button
             className={`${classes} p-1.5 rounded-full ${
-                type === "primary" ? "bg-[#ED762F]" : "bg-white border"
+                type === "primary"
+                    ? "bg-[#ED762F]"
+                    : "bg-white border border-[#b6a896]/25"
             } ${type === "primary" ? "text-white" : "text-black"} 
             ${loading ? "opacity-70 cursor-not-allowed" : ""}
             hover:opacity-70

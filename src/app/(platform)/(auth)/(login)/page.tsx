@@ -142,9 +142,9 @@ export default function Login() {
 
                 {/* Seperator */}
                 <div className="flex mt-8">
-                    <div className="flex-1 border-b border-gray-300"></div>
+                    <div className="flex-1 border-b border-[#b6a896]"></div>
                     <p className="mx-2 text-sm text-[#b6a896]">or</p>
-                    <div className="flex-1 border-b border-gray-300"></div>
+                    <div className="flex-1 border-b border-[#b6a896]"></div>
                 </div>
 
                 {/* Google Sign in */}

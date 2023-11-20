@@ -33,7 +33,7 @@ const Input = ({
 }) => {
     return (
         <input
-            className={`${classes} p-2 text-base rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+            className={`${classes} p-2 text-base rounded-md border border-[#b6a896] focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
             name={name}
             value={value}
             onChange={(e) => setValue(e.target.value)}
