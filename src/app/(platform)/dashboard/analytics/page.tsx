@@ -12,13 +12,7 @@ import AddressCharts from "./components/AddressCharts"
 export default async function Analytics() {
     return (
         <div className="flex-1">
-            <div className="flex flex-col">
-                <h1 className="text-4xl font-bold">Analytics</h1>
-
-                <p className="text-[#b6a896]">
-                    Overview of your patients and their data.
-                </p>
-            </div>
+            <h1 className="text-4xl font-extrabold">Analytics</h1>
 
             {/* Patient Overview Cards */}
             <div className="py-8 flex flex-row flex-wrap gap-4">

@@ -12,7 +12,6 @@ async function getData(): Promise<Patient[]> {
     // Fetch data from your API here.
     return [
         {
-            id: "728ed52f",
             name: "John Doe",
             dob: new Date("01/01/2001"),
             addresses: [
@@ -26,7 +25,6 @@ async function getData(): Promise<Patient[]> {
             status: "active",
         },
         {
-            id: "123",
             name: "Roberto Infante",
             dob: new Date("01/01/2001"),
             addresses: [
@@ -46,7 +44,6 @@ async function getData(): Promise<Patient[]> {
             status: "churned",
         },
         {
-            id: "123",
             name: "Foxy Fox",
             dob: new Date("01/01/2001"),
             addresses: [
@@ -71,13 +68,7 @@ export default async function Patients() {
     return (
         <div className="flex-1">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-4xl font-bold">Patients</h1>
-
-                    <p className="text-[#b6a896]">
-                        Manage your patients records in one place.
-                    </p>
-                </div>
+                <h1 className="text-4xl font-extrabold">Patients</h1>
 
                 <div className="flex flex-row gap-2">
                     {/* Render patient actions such as: Add new patient, export */}
@@ -85,7 +76,7 @@ export default async function Patients() {
                 </div>
             </div>
 
-            <div className="py-8">
+            <div className="py-4">
                 {/* Render datatable with columns and data */}
                 <DataTable columns={columns} data={data} />
             </div>

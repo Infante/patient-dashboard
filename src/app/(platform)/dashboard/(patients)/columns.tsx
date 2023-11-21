@@ -62,7 +62,7 @@ export const columns: ColumnDef<Patient>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                className="p-0"
+                className="p-0 text-light font-normal"
                 onClick={() =>
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
@@ -80,7 +80,7 @@ export const columns: ColumnDef<Patient>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                className="p-0"
+                className="p-0 text-light font-normal"
                 onClick={() =>
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
@@ -99,7 +99,7 @@ export const columns: ColumnDef<Patient>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                className="p-0"
+                className="p-0 text-light font-normal"
                 onClick={() =>
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }

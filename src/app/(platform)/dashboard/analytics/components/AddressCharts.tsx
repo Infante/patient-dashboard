@@ -5,10 +5,10 @@ import { Progress } from "@/components/ui/progress"
 
 const AddressCharts = ({}: {}) => {
     return (
-        <div className="flex-1 rounded-lg border bg-white p-8">
+        <div className="flex-1 rounded-lg border border-stroke bg-white p-8">
             {/* Display a list of addresses with a progress bar representing how much of a % of patients reside in that city */}
             <h5 className="text-2xl font-bold">Top Locations</h5>
-            <p className="text-sm text-[#b6a896]">
+            <p className="text-sm text-light">
                 The top locations where your patients are located. This is
                 determined by the address they provided when they signed up.
             </p>

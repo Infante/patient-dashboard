@@ -102,10 +102,10 @@ export default function ForgotPassword() {
                 />
 
                 {/* Sign in link */}
-                <p className="text-[#b6a896] text-sm text-center mt-4">
+                <p className="text-light text-sm text-center mt-4">
                     <Link
                         href="/"
-                        className="text-[#ED762F] cursor-pointer underline hover:opacity-70"
+                        className="text-primary cursor-pointer underline hover:opacity-70"
                     >
                         Sign in
                     </Link>

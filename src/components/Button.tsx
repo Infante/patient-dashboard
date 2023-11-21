@@ -30,19 +30,20 @@ const Button = ({
 }) => {
     return (
         <button
-            className={`${classes} p-1.5 rounded-full ${
+            className={`${classes} p-2 rounded-md ${
                 type === "primary"
-                    ? "bg-[#ED762F]"
-                    : "bg-white border border-[#b6a896]/25"
+                    ? "bg-primary"
+                    : "bg-white border border-stroke"
             } ${type === "primary" ? "text-white" : "text-black"} 
             ${loading ? "opacity-70 cursor-not-allowed" : ""}
             hover:opacity-70
             transition
             duration-200
-            text-base
+            text-sm
             flex
             justify-center
             items-center
+            font-medium
         `}
             disabled={loading}
             type={type === "primary" ? "submit" : "button"}

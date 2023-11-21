@@ -120,7 +120,7 @@ const PatientActions = () => {
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Add Patient</DialogTitle>
-                        <DialogDescription>
+                        <DialogDescription className="text-light">
                             Add a new patient to your records.
                         </DialogDescription>
                     </DialogHeader>
@@ -135,7 +135,7 @@ const PatientActions = () => {
                     >
                         <div className="flex flex-col gap-4">
                             {/* Patient Information */}
-                            <h5 className="mt-2 font-bold text-sm">
+                            <h5 className="mt-2 font-medium text-sm">
                                 Patient Information
                             </h5>
                             {/* First name */}
@@ -174,7 +174,7 @@ const PatientActions = () => {
                             <div className="flex flex-col md:flex-row md:items-center gap-2">
                                 <label className="text-sm w-20">Birthday</label>
                                 <input
-                                    className={`flex-1 p-2 text-base rounded-md border border-[#b6a896] focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                                    className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                                     type="date"
                                     name="dob"
                                     value={dob}
@@ -187,7 +187,7 @@ const PatientActions = () => {
                             <div className="flex flex-col md:flex-row md:items-center gap-2">
                                 <label className="text-sm w-20">Status</label>
                                 <select
-                                    className={`flex-1 p-2 text-base rounded-md border border-[#b6a896] focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                                    className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                                     name="status"
                                     value={status}
                                     onChange={(e) =>
@@ -214,7 +214,7 @@ const PatientActions = () => {
                                 return (
                                     <>
                                         {/* Address */}
-                                        <h5 className="mt-2 font-bold text-sm">
+                                        <h5 className="mt-2 font-medium text-sm">
                                             Address {index + 1}
                                         </h5>
 

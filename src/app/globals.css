@@ -4,10 +4,13 @@
 
 html,
 body {
-    background-color: #faf6ee;
+    /* background-color: #faf6ee; */
+    background-color: rgb(255, 255, 255);
     padding: 0px;
     margin: 0px;
 }
+
+/* Custom Color Classes */
 
 @layer base {
     :root {
@@ -75,7 +78,7 @@ body {
 
 @layer base {
     * {
-        @apply border-border;
+        @apply border-stroke;
     }
     body {
         @apply bg-background text-foreground;

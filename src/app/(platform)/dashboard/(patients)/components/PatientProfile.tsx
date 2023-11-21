@@ -132,7 +132,7 @@ const PatientProfile = ({
                             <h1 className="font-bold text-2xl">
                                 {patient?.name}
                             </h1>
-                            <p className="text-base text-[#b6a896]">
+                            <p className="text-base text-light">
                                 {/* Get age from DOB */}
                                 {patient?.dob &&
                                     new Date().getFullYear() -
@@ -157,7 +157,7 @@ const PatientProfile = ({
                     <div className="flex flex-col gap-2">
                         <label className="text-sm">Status</label>
                         <select
-                            className={`flex-1 p-2 text-base rounded-md border border-[#b6a896] focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                            className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                             name="status"
                             value={status}
                             onChange={(e) =>
@@ -181,7 +181,7 @@ const PatientProfile = ({
                     <div className="flex flex-col gap-2">
                         <label className="text-sm">Birthday</label>
                         <input
-                            className={`flex-1 p-2 text-base rounded-md border border-[#b6a896] focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                            className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                             type="date"
                             name="dob"
                             value={dob.toISOString().split("T")[0]}
@@ -248,7 +248,7 @@ const PatientProfile = ({
                     <div className="flex flex-col gap-2">
                         <label className="text-sm">Notes</label>
                         <textarea
-                            className={`p-2 text-base rounded-md border border-[#b6a896] focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                            className={`p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                             name="notes"
                             placeholder="Notes"
                         ></textarea>

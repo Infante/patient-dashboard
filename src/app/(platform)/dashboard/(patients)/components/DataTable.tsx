@@ -112,7 +112,7 @@ export function DataTable({
                 setIsOpen={setPatientProfileOpen}
                 patient={patientProfileData}
             />
-            <div className="flex items-center py-4">
+            <div className="flex flex-col md:flex-row md:items-center py-4">
                 <Input
                     placeholder="Search Patients..."
                     value={
@@ -124,42 +124,51 @@ export function DataTable({
                             .getColumn("name")
                             ?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm bg-white"
+                    className="md:mr-2 md:max-w-sm bg-white shadow-sm border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]"
                 />
-                <StatusFilter onSelectStatus={handleStatusChange} />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto bg-white">
-                            Shown Columns{" "}
-                            <ChevronDown className="ml-2 h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="mt-2 md:mt-0 md:ml-auto flex flex-row space-x-2">
+                    <StatusFilter onSelectStatus={handleStatusChange} />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="outline"
+                                size={"sm"}
+                                className="bg-white shadow-sm border-stroke"
+                            >
+                                Toggle Columns{" "}
+                                <ChevronDown className="ml-2 h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {table
+                                .getAllColumns()
+                                .filter((column) => column.getCanHide())
+                                .map((column) => {
+                                    return (
+                                        <DropdownMenuCheckboxItem
+                                            key={column.id}
+                                            className="capitalize"
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) =>
+                                                column.toggleVisibility(!!value)
+                                            }
+                                        >
+                                            {column.id}
+                                        </DropdownMenuCheckboxItem>
+                                    )
+                                })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
-            <div className="rounded-lg border bg-white p-4">
+            <div className="rounded-lg border border-stroke bg-white p-4">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
+                            <TableRow
+                                className="border-stroke"
+                                key={headerGroup.id}
+                            >
                                 {headerGroup.headers.map((header) => {
                                     return (
                                         <TableHead key={header.id}>
@@ -184,6 +193,7 @@ export function DataTable({
                                     data-state={
                                         row.getIsSelected() && "selected"
                                     }
+                                    className="border-stroke"
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         // Make all cells except checkbox clickable
@@ -224,13 +234,13 @@ export function DataTable({
                 </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
+                <div className="flex-1 text-xs text-light">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}
                     {table.getFilteredRowModel().rows.length} row(s) selected.
                 </div>
                 <div className="space-x-2">
                     <Button
-                        className="bg-white"
+                        className="bg-white shadow-sm border-stroke"
                         variant="outline"
                         size="sm"
                         onClick={() => table.previousPage()}
@@ -239,7 +249,7 @@ export function DataTable({
                         Previous
                     </Button>
                     <Button
-                        className="bg-white"
+                        className="bg-white shadow-sm border-stroke"
                         variant="outline"
                         size="sm"
                         onClick={() => table.nextPage()}

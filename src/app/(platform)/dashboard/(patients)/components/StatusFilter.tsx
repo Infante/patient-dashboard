@@ -89,7 +89,7 @@ export function StatusFilter({
                     <Button
                         variant="outline"
                         size="sm"
-                        className="w-[150px] justify-start"
+                        className="ml-auto w-[150px] justify-start shadow-sm border-stroke"
                     >
                         {selectedStatus ? (
                             <>
