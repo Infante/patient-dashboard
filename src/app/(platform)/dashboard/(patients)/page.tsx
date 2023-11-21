@@ -4,8 +4,8 @@
 
 // Import hooks and components
 import { Patient, columns } from "./Columns"
-import { DataTable } from "./DataTable"
-import PatientActions from "./PatientActions"
+import { DataTable } from "./components/DataTable"
+import PatientActions from "./components/PatientActions"
 
 // Function to get data from API
 async function getData(): Promise<Patient[]> {
@@ -43,7 +43,7 @@ async function getData(): Promise<Patient[]> {
                     zip: "10001",
                 },
             ],
-            status: "churnned",
+            status: "churned",
         },
         {
             id: "123",

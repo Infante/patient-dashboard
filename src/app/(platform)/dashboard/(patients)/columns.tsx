@@ -5,19 +5,11 @@
 
 // Imports
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown } from "lucide-react"
 
 // Import components
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
     HoverCard,
     HoverCardContent,
@@ -26,8 +18,7 @@ import {
 
 // Defines the structure for patient data
 export type Patient = {
-    id: string
-    status: "inquiry" | "churnned" | "active" | "onboarding"
+    status: "inquiry" | "churned" | "active" | "onboarding"
     name: string
     dob: Date
     addresses: {
@@ -144,28 +135,5 @@ export const columns: ColumnDef<Patient>[] = [
             )
         },
         enableSorting: true,
-    },
-    // Actions Column
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => (
-            <div className="text-right">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-">
-                            <span className="sr-only">Open menu</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View Patient</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
-        ),
     },
 ]

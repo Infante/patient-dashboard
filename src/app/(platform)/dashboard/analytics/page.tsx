@@ -5,8 +5,8 @@
 // Imports
 
 // Import components
-import AnalyticCard from "./AnalyticCard"
-import AddressCharts from "./AddressCharts"
+import AnalyticCard from "./components/AnalyticCard"
+import AddressCharts from "./components/AddressCharts"
 
 // Analytics Page
 export default async function Analytics() {

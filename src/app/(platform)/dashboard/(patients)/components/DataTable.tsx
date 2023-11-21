@@ -37,8 +37,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Patient } from "./Columns"
+import { Patient } from "../Columns"
 import { StatusFilter } from "./StatusFilter"
+import PatientProfile from "./PatientProfile"
 
 // Export DataTable
 export function DataTable({
@@ -58,6 +59,11 @@ export function DataTable({
 
     // State for the selected status filter
     const [selectedStatus, setSelectedStatus] = React.useState<string>("")
+
+    // State for the patient profile
+    const [patientProfileOpen, setPatientProfileOpen] = React.useState(false)
+    const [patientProfileData, setPatientProfileData] =
+        React.useState<Patient | null>(null)
 
     // Create the table
     const table = useReactTable({
@@ -101,6 +107,11 @@ export function DataTable({
 
     return (
         <div className="w-full">
+            <PatientProfile
+                isOpen={patientProfileOpen}
+                setIsOpen={setPatientProfileOpen}
+                patient={patientProfileData}
+            />
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Search Patients..."
@@ -175,7 +186,22 @@ export function DataTable({
                                     }
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        // Make all cells except checkbox clickable
+                                        <TableCell
+                                            key={cell.id}
+                                            className={`${
+                                                cell.column.id !== "select" &&
+                                                "hover:cursor-pointer"
+                                            }`}
+                                            onClick={() => {
+                                                if (cell.column.id === "select")
+                                                    return
+                                                setPatientProfileData(
+                                                    row.original as Patient
+                                                )
+                                                setPatientProfileOpen(true)
+                                            }}
+                                        >
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext()
