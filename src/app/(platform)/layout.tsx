@@ -3,6 +3,7 @@
 
 // Set to use client for auth
 "use client"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 // Import react hot toast
 import { Toaster } from "react-hot-toast"
@@ -15,11 +16,15 @@ export default function PlatformLayout({
 }: {
     children: React.ReactNode
 }) {
+    const queryClient = new QueryClient()
     return (
         <>
             {/* Wrap body in auth context */}
             <AuthProvider>
-                {children}
+                {/* Wrap body in query client */}
+                <QueryClientProvider client={queryClient}>
+                    {children}
+                </QueryClientProvider>
                 <Toaster position="bottom-center" reverseOrder={false} />
             </AuthProvider>
         </>

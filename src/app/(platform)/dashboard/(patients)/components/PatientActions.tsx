@@ -3,8 +3,9 @@
 "use client"
 import { useState } from "react"
 import { HiPlusSm, HiMinusSm } from "react-icons/hi"
+import toast from "react-hot-toast"
 
-// Import components
+// Import components and types
 import AddressGroup from "./AddressGroup"
 import Button from "@/components/Button"
 import Input from "@/components/Input"
@@ -17,7 +18,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Patient } from "../Columns"
+import { Patient, useAddPatient } from "@/hooks/usePatients"
+import { useAuth } from "@/contexts/AuthContext"
 
 // PatientActions component
 const PatientActions = () => {
@@ -44,6 +46,17 @@ const PatientActions = () => {
         },
     ])
 
+    // Import token from auth
+    const { token } = useAuth()
+
+    // Add patient mutation
+    const {
+        mutateAsync: addPatient,
+        error: addError,
+        isPending,
+        isSuccess,
+    } = useAddPatient(token)
+
     // Error state
     const [error, setError] = useState<string | null>("")
 
@@ -63,54 +76,74 @@ const PatientActions = () => {
     }
 
     // Handler to add a new patient
-    const handleAddPatinet = () => {
-        // Create new patient
-        const newPatient: Patient = {
-            name: `${firstName} ${lastName}`,
-            dob: new Date(dob),
-            addresses,
-            status,
-        }
+    const handleAddPatinet = async () => {
+        try {
+            // Create new patient
+            const newPatient: Patient = {
+                name: `${firstName} ${lastName}`,
+                dob: new Date(dob),
+                addresses,
+                status,
+                notes: "",
+            }
 
-        console.log(newPatient)
-
-        // Validate patient by checking for empty fields
-        if (!firstName) {
-            setError("Please enter a first name.")
-            return
-        }
-        if (!lastName) {
-            setError("Please enter a last name.")
-            return
-        }
-
-        if (!dob) {
-            setError("Please enter a birthday.")
-            return
-        }
-
-        // Validate addresses
-        if (addresses.length === 0) {
-            setError("Please add at least one address.")
-            return
-        }
-        for (const address of addresses) {
-            if (
-                !address.street ||
-                !address.city ||
-                !address.state ||
-                !address.zip
-            ) {
-                setError("Please fill out all fields.")
+            // Validate patient by checking for empty fields
+            if (!firstName) {
+                setError("Please enter a first name.")
                 return
             }
+            if (!lastName) {
+                setError("Please enter a last name.")
+                return
+            }
+
+            if (!dob) {
+                setError("Please enter a birthday.")
+                return
+            }
+
+            // Validate addresses
+            if (addresses.length === 0) {
+                setError("Please add at least one address.")
+                return
+            }
+            for (const address of addresses) {
+                if (
+                    !address.street ||
+                    !address.city ||
+                    !address.state ||
+                    !address.zip
+                ) {
+                    setError("Please fill out all fields.")
+                    return
+                }
+            }
+
+            // Reset error
+            setError(null)
+
+            // Send patient to API
+            addPatient(newPatient)
+
+            // Reset form
+            setFirstName("")
+            setLastName("")
+            setDob("")
+            setStatus("inquiry")
+            setAddresses([
+                {
+                    street: "",
+                    city: "",
+                    state: "AL",
+                    zip: "",
+                },
+            ])
+
+            // Show toast
+            toast.success("Patient added successfully.")
+        } catch (error) {
+            toast.error("Failed to add patient.")
         }
-
-        // Reset error
-        setError(null)
-
-        // Send patient to API
-        console.log("Submitting patient to API...")
     }
 
     return (
@@ -300,13 +333,14 @@ const PatientActions = () => {
 
                     <DialogFooter className="mt-4">
                         {/* Form Error */}
-                        {error && (
-                            <div className="flex-1 flex items-center">
-                                <p className="text-sm font-medium text-rose-500">
-                                    {error}
-                                </p>
-                            </div>
-                        )}
+                        {error ||
+                            (addError && (
+                                <div className="flex-1 flex items-center">
+                                    <p className="text-sm font-medium text-rose-500">
+                                        {error || addError.message}
+                                    </p>
+                                </div>
+                            ))}
 
                         <Button
                             classes="max-h-[40px] px-6 text-sm"
@@ -315,6 +349,7 @@ const PatientActions = () => {
                             onClick={() => {
                                 handleAddPatinet()
                             }}
+                            loading={isPending}
                         />
                     </DialogFooter>
                 </DialogContent>

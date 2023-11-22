@@ -1,68 +1,22 @@
+"use client"
 // Path: /dashboard
 // Patients View Dashboard Page
 // Description: Page for the patients view on the dashboard, display table of patients
 
 // Import hooks and components
-import { Patient, columns } from "./Columns"
-import { DataTable } from "./components/DataTable"
+import { columns } from "./Columns"
+import DataTable from "./components/DataTable"
 import PatientActions from "./components/PatientActions"
-
-// Function to get data from API
-async function getData(): Promise<Patient[]> {
-    // Fetch data from your API here.
-    return [
-        {
-            name: "John Doe",
-            dob: new Date("01/01/2001"),
-            addresses: [
-                {
-                    city: "New York City",
-                    state: "NY",
-                    street: "123 Main St",
-                    zip: "10001",
-                },
-            ],
-            status: "active",
-        },
-        {
-            name: "Roberto Infante",
-            dob: new Date("01/01/2001"),
-            addresses: [
-                {
-                    city: "New York City",
-                    state: "NY",
-                    street: "123 Main St",
-                    zip: "10001",
-                },
-                {
-                    city: "Brooklyn",
-                    state: "NY",
-                    street: "321 Main St",
-                    zip: "10001",
-                },
-            ],
-            status: "churned",
-        },
-        {
-            name: "Foxy Fox",
-            dob: new Date("01/01/2001"),
-            addresses: [
-                {
-                    city: "New York City",
-                    state: "NY",
-                    street: "123 Main St",
-                    zip: "10001",
-                },
-            ],
-            status: "inquiry",
-        },
-    ]
-}
+import { usePatients } from "@/hooks/usePatients"
+import { useAuth } from "@/contexts/AuthContext"
 
 // Patients Page
-export default async function Patients() {
-    // Pull data from API
-    const data = await getData()
+export default function Patients() {
+    // Get auth from useAuth hook
+    const { token } = useAuth()
+
+    // Get patients from usePatients hook
+    const { data, isLoading, isError } = usePatients(token)
 
     // Return Patients Page
     return (
@@ -76,9 +30,15 @@ export default async function Patients() {
                 </div>
             </div>
 
-            <div className="py-4">
+            <div className="relative py-4">
+                {/* On loading display loading animation */}
+                {isLoading ? <div>Loading...</div> : null}
+
+                {/* On error display error */}
+                {isError ? <div>Error...</div> : null}
+
                 {/* Render datatable with columns and data */}
-                <DataTable columns={columns} data={data} />
+                {data ? <DataTable columns={columns} data={data} /> : null}
             </div>
         </div>
     )

@@ -20,7 +20,7 @@ import {
 import { ChevronDown } from "lucide-react"
 import * as React from "react"
 
-// Import components
+// Import components and types
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -37,13 +37,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Patient } from "../Columns"
+import { Patient } from "@/hooks/usePatients"
 import { StatusFilter } from "./StatusFilter"
 import { City, CityFilter } from "./CityFilter"
 import PatientProfile from "./PatientProfile"
 
 // Export DataTable
-export function DataTable({
+export default function DataTable({
     data,
     columns,
 }: {
@@ -83,10 +83,7 @@ export function DataTable({
         onRowSelectionChange: setRowSelection,
         state: {
             sorting,
-            columnFilters: [
-                ...columnFilters.filter((filter) => filter.id !== "city"), // Remove existing city filter
-                ...(selectedCity ? [{ id: "city", value: selectedCity }] : []), // Add new city filter if selectedCity is not empty
-            ],
+            columnFilters,
             columnVisibility,
             rowSelection,
         },

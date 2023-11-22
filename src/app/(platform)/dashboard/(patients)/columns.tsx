@@ -7,7 +7,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 
-// Import components
+// Import components and types
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -15,19 +15,7 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card"
-
-// Defines the structure for patient data
-export type Patient = {
-    status: "inquiry" | "churned" | "active" | "onboarding"
-    name: string
-    dob: Date
-    addresses: {
-        street: string
-        city: string
-        state: string
-        zip: string
-    }[]
-}
+import { Patient } from "@/hooks/usePatients"
 
 // Columns definitions for the patient table
 export const columns: ColumnDef<Patient>[] = [

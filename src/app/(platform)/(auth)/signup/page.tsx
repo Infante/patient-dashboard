@@ -9,6 +9,7 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
 } from "firebase/auth"
+import { doc, getDoc, setDoc } from "firebase/firestore"
 import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
@@ -21,7 +22,7 @@ import Button from "@/components/Button"
 import Input from "@/components/Input"
 import Loading from "@/components/Loading"
 import { useAuth } from "@/contexts/AuthContext"
-import { auth } from "@/lib/firebase"
+import { auth, firestore } from "@/lib/firebase"
 
 export default function Signup() {
     // Accessing authentication context
@@ -42,12 +43,31 @@ export default function Signup() {
     const handleSignup = async () => {
         try {
             // Validate email and password
+            if (password !== password2) {
+                toast.error("Passwords do not match.")
+                return
+            }
+
             setSubmitting(true)
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
                 email,
                 password
             )
+
+            // Create user object in firestore
+            const { user } = userCredential
+
+            // Additional user data you might want to store
+            const additionalUserInfo = {
+                email: user.email,
+                createdAt: new Date(),
+                // ...any other info you want to store
+            }
+
+            // Add a record in Firestore in the 'users' collection
+            await setDoc(doc(firestore, "users", user.uid), additionalUserInfo)
+
             toast.success("Account created successfully.")
         } catch (error: any) {
             setSubmitting(false)
@@ -81,7 +101,25 @@ export default function Signup() {
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider()
         provider.setCustomParameters({ prompt: "select_account" })
-        signInWithPopup(auth, provider)
+        const result = await signInWithPopup(auth, provider)
+        const user = result.user
+
+        // Check if the user record exists in Firestore
+        const userRef = doc(firestore, "users", user.uid)
+        const docSnap = await getDoc(userRef)
+
+        if (!docSnap.exists()) {
+            // Create a new user record in Firestore if it doesn't exist
+            const additionalUserInfo = {
+                email: user.email,
+                createdAt: new Date(),
+                // ...any other info you want to store
+            }
+            await setDoc(userRef, additionalUserInfo)
+        }
+
+        toast.success("Signed in with Google successfully.")
+        // Redirect to the dashboard or desired page
     }
 
     // Display loading component while authentication state is being determined

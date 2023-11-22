@@ -15,8 +15,10 @@ export const useAuth = () => {
 // Provider component
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null)
+    const [token, setToken] = useState("") // [1
     const [loading, setLoading] = useState(true)
 
+    // On mount, subscribe to auth state change
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user)
@@ -27,9 +29,17 @@ export const AuthProvider = ({ children }) => {
         return unsubscribe
     }, [])
 
+    // On user change, get token
+    useEffect(() => {
+        if (currentUser) {
+            currentUser.getIdToken().then(setToken)
+        }
+    }, [currentUser])
+
     const value = {
         currentUser,
         loading,
+        token,
     }
 
     return (

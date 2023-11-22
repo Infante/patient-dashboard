@@ -6,11 +6,11 @@
 import { useEffect, useState } from "react"
 import { HiPlusSm, HiMinusSm } from "react-icons/hi"
 
-// Import components
+// Import components and types
 import Button from "@/components/Button"
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet"
-import { Patient } from "../Columns"
 import AddressGroup from "./AddressGroup"
+import { Patient } from "@/hooks/usePatients"
 
 // Patient Profile component
 const PatientProfile = ({
@@ -36,6 +36,7 @@ const PatientProfile = ({
             zip: string
         }[]
     >(patient?.addresses || [])
+    const [notes, setNotes] = useState<string>(patient?.notes || "")
 
     // On patient change, update form states
     useEffect(() => {
@@ -44,6 +45,7 @@ const PatientProfile = ({
         setDob(patient?.dob || new Date())
         setStatus(patient?.status || "inquiry")
         setAddresses(patient?.addresses || [])
+        setNotes(patient?.notes || "")
     }, [patient])
 
     // Error States
@@ -73,6 +75,7 @@ const PatientProfile = ({
             dob,
             status,
             addresses,
+            notes,
         }
 
         // Validate patient object
@@ -169,6 +172,8 @@ const PatientProfile = ({
                             className={`p-2 text-sm rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                             name="notes"
                             placeholder="Notes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
                         ></textarea>
                     </div>
 

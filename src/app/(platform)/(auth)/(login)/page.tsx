@@ -4,6 +4,7 @@
 "use client"
 
 // Imports
+import { doc, getDoc, setDoc } from "firebase/firestore"
 import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
@@ -17,7 +18,7 @@ import {
 } from "firebase/auth"
 
 // Import hooks and components
-import { auth } from "@/lib/firebase"
+import { auth, firestore } from "@/lib/firebase"
 import { useAuth } from "@/contexts/AuthContext"
 import Button from "@/components/Button"
 import Input from "@/components/Input"
@@ -77,9 +78,26 @@ export default function Login() {
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider()
         provider.setCustomParameters({ prompt: "select_account" })
-        signInWithPopup(auth, provider)
-    }
+        const result = await signInWithPopup(auth, provider)
+        const user = result.user
 
+        // Check if the user record exists in Firestore
+        const userRef = doc(firestore, "users", user.uid)
+        const docSnap = await getDoc(userRef)
+
+        if (!docSnap.exists()) {
+            // Create a new user record in Firestore if it doesn't exist
+            const additionalUserInfo = {
+                email: user.email,
+                createdAt: new Date(),
+                // ...any other info you want to store
+            }
+            await setDoc(userRef, additionalUserInfo)
+        }
+
+        toast.success("Signed in with Google successfully.")
+        // Redirect to the dashboard or desired page
+    }
     // Display loading component while authentication state is being determined
     if (loading) {
         return <Loading></Loading>

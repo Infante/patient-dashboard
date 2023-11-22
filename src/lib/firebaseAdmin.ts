@@ -1,6 +1,6 @@
 // Firebase Admin SDK setup
 // Server side only
-"use server"
+"server-only"
 
 import * as admin from "firebase-admin"
 
