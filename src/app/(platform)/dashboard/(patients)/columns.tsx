@@ -89,7 +89,23 @@ export const columns: ColumnDef<Patient>[] = [
             </Button>
         ),
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("status")}</div>
+            <div className="capitalize font-medium">
+                <span
+                    className={`py-1 px-6 rounded-full ${
+                        row.getValue("status") === "inquiry"
+                            ? "bg-[#83C0D8]/40 text-[#74AABF]"
+                            : row.getValue("status") === "churned"
+                            ? "bg-[#d88383]/40 text-[#BF7474]"
+                            : row.getValue("status") === "active"
+                            ? "bg-[#ed762f]/40 text-[#D4692A]"
+                            : row.getValue("status") === "onboarding"
+                            ? "bg-[#44E747]/40 text-[#1D9F1F]"
+                            : ""
+                    }`}
+                >
+                    {row.getValue("status")}
+                </span>
+            </div>
         ),
         enableSorting: true,
     },

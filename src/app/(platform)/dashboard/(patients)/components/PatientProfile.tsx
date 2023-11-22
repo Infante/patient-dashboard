@@ -4,6 +4,7 @@
 
 // Imports
 import { useEffect, useState } from "react"
+import { HiPlusSm, HiMinusSm } from "react-icons/hi"
 
 // Import components
 import Button from "@/components/Button"
@@ -132,7 +133,7 @@ const PatientProfile = ({
                             <h1 className="font-bold text-2xl">
                                 {patient?.name}
                             </h1>
-                            <p className="text-base text-light">
+                            <p className="text-sm text-light">
                                 {/* Get age from DOB */}
                                 {patient?.dob &&
                                     new Date().getFullYear() -
@@ -141,6 +142,15 @@ const PatientProfile = ({
                                         ).getFullYear()}{" "}
                                 years old
                             </p>
+                        </div>
+
+                        <div className="flex-1 flex justify-end">
+                            <Button
+                                classes="max-h-[40px] px-6 text-sm"
+                                text="Save Changes"
+                                type="primary"
+                                onClick={handleUpdatePatient}
+                            />
                         </div>
                     </div>
                 </SheetHeader>
@@ -153,11 +163,22 @@ const PatientProfile = ({
                     }}
                     className="py-4 flex flex-col gap-4"
                 >
+                    {/* Notes */}
+                    <div className="flex flex-col gap-2">
+                        <textarea
+                            className={`p-2 text-sm rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                            name="notes"
+                            placeholder="Notes"
+                        ></textarea>
+                    </div>
+
+                    <h5 className="mt-2 font-bold text-sm">Patient Details</h5>
+
                     {/* Status */}
                     <div className="flex flex-col gap-2">
                         <label className="text-sm">Status</label>
                         <select
-                            className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                            className={`flex-1 p-2 text-sm rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                             name="status"
                             value={status}
                             onChange={(e) =>
@@ -181,7 +202,7 @@ const PatientProfile = ({
                     <div className="flex flex-col gap-2">
                         <label className="text-sm">Birthday</label>
                         <input
-                            className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                            className={`flex-1 p-2 text-sm rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                             type="date"
                             name="dob"
                             value={dob.toISOString().split("T")[0]}
@@ -210,68 +231,50 @@ const PatientProfile = ({
                                     setAddressAtIndex={setAddressAtIndex}
                                 />
 
-                                {/* Remove address group */}
-                                <Button
-                                    classes="max-h-[40px] px-6 text-sm"
-                                    text="Remove Address"
-                                    type="secondary"
-                                    onClick={() => {
-                                        setAddresses(
-                                            addresses.filter(
-                                                (_, i) => i !== index
-                                            )
-                                        )
-                                    }}
-                                />
+                                {/* Remove address group for extra addresses */}
+                                {index > 0 && (
+                                    <div className="float-left">
+                                        <Button
+                                            classes="bg-transparent border-none text-sm pl-0 text-light underline text-rose-500"
+                                            text="Remove Address"
+                                            type="secondary"
+                                            icon={
+                                                <HiMinusSm className="text-xl" />
+                                            }
+                                            onClick={() => {
+                                                setAddresses(
+                                                    addresses.filter(
+                                                        (_, i) => i !== index
+                                                    )
+                                                )
+                                            }}
+                                        />
+                                    </div>
+                                )}
                             </>
                         )
                     })}
 
                     {/* Add new address button */}
-                    <Button
-                        classes="max-h-[40px] px-6 text-sm"
-                        text="Add Address"
-                        type="secondary"
-                        onClick={() => {
-                            setAddresses([
-                                ...addresses,
-                                {
-                                    street: "",
-                                    city: "",
-                                    state: "",
-                                    zip: "",
-                                },
-                            ])
-                        }}
-                    />
-                    {/* Notes */}
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm">Notes</label>
-                        <textarea
-                            className={`p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
-                            name="notes"
-                            placeholder="Notes"
-                        ></textarea>
+                    <div className="-mt-2">
+                        <Button
+                            classes="bg-transparent border-none text-sm pl-0 text-light underline"
+                            text="Add Other Address"
+                            type="secondary"
+                            icon={<HiPlusSm className="text-xl" />}
+                            onClick={() => {
+                                setAddresses([
+                                    ...addresses,
+                                    {
+                                        street: "",
+                                        city: "",
+                                        state: "AL",
+                                        zip: "",
+                                    },
+                                ])
+                            }}
+                        />
                     </div>
-
-                    {/* Attachments box (just for show can be disabled for now) */}
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm">Attachments</label>
-                        <div className="flex flex-col md:flex-row md:items-center gap-2"></div>
-                    </div>
-
-                    {/* Error display */}
-                    {error && (
-                        <div className="text-red-500 text-sm">{error}</div>
-                    )}
-
-                    {/* Submit button */}
-                    <Button
-                        classes="max-h-[40px] px-6 text-sm"
-                        text="Update Patient"
-                        type="primary"
-                        onClick={handleUpdatePatient}
-                    />
                 </form>
             </SheetContent>
         </Sheet>

@@ -2,6 +2,7 @@
 // Patient page actions, such as adding new patient, deleting, updating columns, etc.
 "use client"
 import { useState } from "react"
+import { HiPlusSm, HiMinusSm } from "react-icons/hi"
 
 // Import components
 import AddressGroup from "./AddressGroup"
@@ -34,10 +35,17 @@ const PatientActions = () => {
             state: string
             zip: string
         }[]
-    >([])
+    >([
+        {
+            street: "",
+            city: "",
+            state: "AL",
+            zip: "",
+        },
+    ])
 
     // Error state
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>("")
 
     // Handler to update a specific address at an index
     const setAddressAtIndex = (
@@ -67,8 +75,17 @@ const PatientActions = () => {
         console.log(newPatient)
 
         // Validate patient by checking for empty fields
-        if (!firstName || !lastName || !dob || !status) {
-            setError("Please fill out all fields.")
+        if (!firstName) {
+            setError("Please enter a first name.")
+            return
+        }
+        if (!lastName) {
+            setError("Please enter a last name.")
+            return
+        }
+
+        if (!dob) {
+            setError("Please enter a birthday.")
             return
         }
 
@@ -131,7 +148,7 @@ const PatientActions = () => {
                             e.preventDefault()
                             handleAddPatinet()
                         }}
-                        className="max-h-[500px] overflow-y-scroll"
+                        className="max-h-[550px] overflow-y-scroll no-scrollbar"
                     >
                         <div className="flex flex-col gap-4">
                             {/* Patient Information */}
@@ -174,7 +191,7 @@ const PatientActions = () => {
                             <div className="flex flex-col md:flex-row md:items-center gap-2">
                                 <label className="text-sm w-20">Birthday</label>
                                 <input
-                                    className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                                    className={`flex-1 p-2 text-sm rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                                     type="date"
                                     name="dob"
                                     value={dob}
@@ -187,7 +204,7 @@ const PatientActions = () => {
                             <div className="flex flex-col md:flex-row md:items-center gap-2">
                                 <label className="text-sm w-20">Status</label>
                                 <select
-                                    className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                                    className={`flex-1 p-2 text-sm rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                                     name="status"
                                     value={status}
                                     onChange={(e) =>
@@ -209,6 +226,8 @@ const PatientActions = () => {
                                 </select>
                             </div>
 
+                            {/* Address actions */}
+
                             {/* Render addresses */}
                             {addresses.map((address, index) => {
                                 return (
@@ -228,47 +247,62 @@ const PatientActions = () => {
                                             }
                                         />
 
-                                        {/* Remove address group */}
-                                        <Button
-                                            classes="max-h-[40px] px-6 text-sm"
-                                            text="Remove Address"
-                                            type="secondary"
-                                            onClick={() => {
-                                                setAddresses(
-                                                    addresses.filter(
-                                                        (_, i) => i !== index
-                                                    )
-                                                )
-                                            }}
-                                        />
+                                        {/* Remove address group for extra addresses */}
+                                        {index > 0 && (
+                                            <div className="float-left">
+                                                <Button
+                                                    classes="bg-transparent border-none text-sm pl-0 text-light underline text-rose-500"
+                                                    text="Remove Address"
+                                                    type="secondary"
+                                                    icon={
+                                                        <HiMinusSm className="text-xl" />
+                                                    }
+                                                    onClick={() => {
+                                                        setAddresses(
+                                                            addresses.filter(
+                                                                (_, i) =>
+                                                                    i !== index
+                                                            )
+                                                        )
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
                                     </>
                                 )
                             })}
 
                             {/* Add new address button */}
-                            <Button
-                                classes="max-h-[40px] px-6 text-sm"
-                                text="Add Address"
-                                type="secondary"
-                                onClick={() => {
-                                    setAddresses([
-                                        ...addresses,
-                                        {
-                                            street: "",
-                                            city: "",
-                                            state: "",
-                                            zip: "",
-                                        },
-                                    ])
-                                }}
-                            />
+                            <div className="-mt-2">
+                                <Button
+                                    classes="bg-transparent border-none text-sm pl-0 text-light underline"
+                                    text="Add Other Address"
+                                    type="secondary"
+                                    icon={<HiPlusSm className="text-xl" />}
+                                    onClick={() => {
+                                        setAddresses([
+                                            ...addresses,
+                                            {
+                                                street: "",
+                                                city: "",
+                                                state: "AL",
+                                                zip: "",
+                                            },
+                                        ])
+                                    }}
+                                />
+                            </div>
                         </div>
                     </form>
 
                     <DialogFooter className="mt-4">
                         {/* Form Error */}
                         {error && (
-                            <p className="text-sm text-red-500">{error}</p>
+                            <div className="flex-1 flex items-center">
+                                <p className="text-sm font-medium text-rose-500">
+                                    {error}
+                                </p>
+                            </div>
                         )}
 
                         <Button

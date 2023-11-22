@@ -10,6 +10,17 @@ body {
     margin: 0px;
 }
 
+/* Hide Scrollbars */
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
 /* Custom Color Classes */
 
 @layer base {
