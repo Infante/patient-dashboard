@@ -231,7 +231,10 @@ const PatientActions = () => {
                             {/* Render addresses */}
                             {addresses.map((address, index) => {
                                 return (
-                                    <>
+                                    <div
+                                        className="flex flex-col gap-2"
+                                        key={index}
+                                    >
                                         {/* Address */}
                                         <h5 className="mt-2 font-medium text-sm">
                                             Address {index + 1}
@@ -268,7 +271,7 @@ const PatientActions = () => {
                                                 />
                                             </div>
                                         )}
-                                    </>
+                                    </div>
                                 )
                             })}
 

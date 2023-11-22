@@ -152,4 +152,14 @@ export const columns: ColumnDef<Patient>[] = [
         },
         enableSorting: true,
     },
+
+    // Hidden city column used for filtering
+    {
+        id: "city",
+        accessorFn: (row) => {
+            return row.addresses.map((address) => address.city).join(", ")
+        },
+        header: () => null,
+        cell: () => null,
+    },
 ]

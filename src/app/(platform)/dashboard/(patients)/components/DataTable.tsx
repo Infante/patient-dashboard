@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/table"
 import { Patient } from "../Columns"
 import { StatusFilter } from "./StatusFilter"
+import { City, CityFilter } from "./CityFilter"
 import PatientProfile from "./PatientProfile"
 
 // Export DataTable
@@ -60,6 +61,9 @@ export function DataTable({
     // State for the selected status filter
     const [selectedStatus, setSelectedStatus] = React.useState<string>("")
 
+    // State for the selected city filter
+    const [selectedCity, setSelectedCity] = React.useState<string>("")
+
     // State for the patient profile
     const [patientProfileOpen, setPatientProfileOpen] = React.useState(false)
     const [patientProfileData, setPatientProfileData] =
@@ -79,13 +83,34 @@ export function DataTable({
         onRowSelectionChange: setRowSelection,
         state: {
             sorting,
-            columnFilters: selectedStatus
-                ? [...columnFilters, { id: "status", value: selectedStatus }]
-                : columnFilters, // Add status filter to column filters
+            columnFilters: [
+                ...columnFilters.filter((filter) => filter.id !== "city"), // Remove existing city filter
+                ...(selectedCity ? [{ id: "city", value: selectedCity }] : []), // Add new city filter if selectedCity is not empty
+            ],
             columnVisibility,
             rowSelection,
         },
     })
+
+    // Function to get all the cities across all patients
+    const extractCities = (patients: Patient[]) => {
+        const cities: City[] = []
+        patients.forEach((patient) => {
+            patient.addresses.forEach((address) => {
+                cities.push({
+                    value: address.city.toLowerCase(),
+                    label: address.city,
+                })
+            })
+        })
+        // Remove duplicates
+        const uniqueCities = cities.filter(
+            (city, index) =>
+                cities.findIndex((c) => c.value === city.value) === index
+        )
+        // Return the unique cities
+        return uniqueCities
+    }
 
     // Filtering by status
     const handleStatusChange = (newStatus: string) => {
@@ -101,6 +126,24 @@ export function DataTable({
             setColumnFilters((oldFilters) => [
                 ...oldFilters.filter((filter) => filter.id !== "status"), // Remove existing status filter
                 { id: "status", value: newStatus }, // Add new status filter
+            ])
+        }
+    }
+
+    // Filtering by city
+    const handleCityChange = (newCity: string) => {
+        if (newCity === "all") {
+            setSelectedCity("")
+            // Update the table filter
+            setColumnFilters((oldFilters) =>
+                oldFilters.filter((filter) => filter.id !== "city")
+            )
+        } else {
+            setSelectedCity(newCity)
+            // Update the table filter
+            setColumnFilters((oldFilters) => [
+                ...oldFilters.filter((filter) => filter.id !== "city"), // Remove existing city filter
+                { id: "city", value: newCity }, // Add new city filter
             ])
         }
     }
@@ -127,6 +170,11 @@ export function DataTable({
                     className="md:mr-2 md:max-w-sm bg-white shadow-sm border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]"
                 />
                 <div className="mt-2 md:mt-0 md:ml-auto flex flex-row space-x-2">
+                    <CityFilter
+                        cities={extractCities(data)}
+                        onSelectStatus={handleCityChange}
+                    />
+
                     <StatusFilter onSelectStatus={handleStatusChange} />
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>

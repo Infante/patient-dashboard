@@ -20,50 +20,33 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-// Define status type
-type Status = {
+// Define City type
+export type City = {
     value: string
     label: string
 }
 
-// Status filter options
-const statuses: Status[] = [
-    {
-        value: "inquiry",
-        label: "Inquiry",
-    },
-    {
-        value: "onboarding",
-        label: "Onboarding",
-    },
-    {
-        value: "active",
-        label: "Active",
-    },
-    {
-        value: "churnned",
-        label: "Churnned",
-    },
-]
-
-export function StatusFilter({
+export function CityFilter({
+    cities,
     onSelectStatus,
 }: {
+    cities: City[]
     onSelectStatus: (status: string) => void
 }) {
     const [open, setOpen] = useState<boolean>(false)
-    const [selectedStatus, setSelectedStatus] = useState<Status | null>(null)
+    const [selectedCity, setSelectedCity] = useState<City | null>(null)
 
     useEffect(() => {
-        // If a status is selected, call the onSelectStatus callback with the status value
-        if (selectedStatus) {
-            onSelectStatus(selectedStatus.value)
+        // If a city is selected, call the onSelectStatus function
+        if (selectedCity) {
+            console.log(selectedCity)
+            onSelectStatus(selectedCity.value)
         }
-        // If no status is selected (not found or "all"), call the onSelectStatus callback with "all"
+        // If no city is selected or "all" is selected, call the onSelectStatus function with a value of "all"
         else {
             onSelectStatus("all")
         }
-    }, [selectedStatus])
+    }, [selectedCity])
 
     return (
         <div className="bg-white flex items-center space-x-4">
@@ -74,10 +57,10 @@ export function StatusFilter({
                         size="sm"
                         className="ml-auto w-[150px] justify-start shadow-sm border-stroke"
                     >
-                        {selectedStatus ? (
-                            <>{selectedStatus.label}</>
+                        {selectedCity ? (
+                            <>{selectedCity.label}</>
                         ) : (
-                            <>+ Filter by Status</>
+                            <>+ Filter by City</>
                         )}
                     </Button>
                 </PopoverTrigger>
@@ -91,14 +74,34 @@ export function StatusFilter({
                                         key="all"
                                         value="all"
                                         onSelect={(value) => {
-                                            setSelectedStatus(null)
+                                            setSelectedCity(null)
                                             setOpen(false)
                                         }}
                                     >
                                         <span>All</span>
                                     </CommandItem>
                                 }
-                                {statuses.map((status) => (
+
+                                {cities.map((city) => (
+                                    <CommandItem
+                                        key={city.value}
+                                        value={city.value}
+                                        onSelect={(value) => {
+                                            // Set selected city to the city that was clicked from the list
+                                            setSelectedCity(
+                                                cities.find(
+                                                    (city) =>
+                                                        city.value === value
+                                                ) || null
+                                            )
+                                            setOpen(false)
+                                        }}
+                                    >
+                                        <span>{city.label}</span>
+                                    </CommandItem>
+                                ))}
+
+                                {/* {statuses.map((status) => (
                                     <CommandItem
                                         key={status.value}
                                         value={status.value}
@@ -114,7 +117,7 @@ export function StatusFilter({
                                     >
                                         <span>{status.label}</span>
                                     </CommandItem>
-                                ))}
+                                ))} */}
                             </CommandGroup>
                         </CommandList>
                     </Command>
