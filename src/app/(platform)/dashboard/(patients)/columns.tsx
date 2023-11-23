@@ -141,11 +141,42 @@ export const columns: ColumnDef<Patient>[] = [
         },
         enableSorting: true,
     },
-
+    //
+    {
+        accessorKey: "extra",
+        header: ({ column }) => <>Extra Fields</>,
+        cell: ({ row }) => {
+            let extraFields = row.original.extra ? row.original.extra : []
+            return (
+                <HoverCard>
+                    <HoverCardTrigger className="flex flex-row items-center gap-2">
+                        {extraFields[0].name}: {extraFields[0].value}
+                        {extraFields.length > 1 && (
+                            <div className="w-[22px] h-[22px] rounded-full bg-[#ED762F] flex items-center justify-center text-white text-[10px]">
+                                <span>+{extraFields.length - 1}</span>
+                            </div>
+                        )}
+                    </HoverCardTrigger>
+                    <HoverCardContent className="flex flex-col gap-4">
+                        {extraFields.map(({ name, value }, index) => (
+                            <div
+                                key={index}
+                                className="flex flex-col gap-1 text-sm"
+                            >
+                                {name}: {value}
+                            </div>
+                        ))}
+                    </HoverCardContent>
+                </HoverCard>
+            )
+        },
+        enableSorting: true,
+    },
     // Hidden city column used for filtering
     {
         id: "city",
         accessorFn: (row) => {
+            // Return a string of all the cities separated by a comma
             return row.addresses.map((address) => address.city).join(", ")
         },
         header: () => null,

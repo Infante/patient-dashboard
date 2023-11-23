@@ -7,6 +7,7 @@ import toast from "react-hot-toast"
 
 // Import components and types
 import AddressGroup from "./AddressGroup"
+import ExtraFieldGroup from "./ExtraFieldGroup"
 import Button from "@/components/Button"
 import Input from "@/components/Input"
 import {
@@ -45,6 +46,13 @@ const PatientActions = () => {
             zip: "",
         },
     ])
+    const [extraFields, setExtraFields] = useState<
+        {
+            name: string
+            value: string
+            type: "string" | "number" | "date"
+        }[]
+    >([])
 
     // Import token from auth
     const { token } = useAuth()
@@ -71,6 +79,20 @@ const PatientActions = () => {
     ) => {
         setAddresses(
             addresses.map((addr, i) => (i === index ? newAddress : addr))
+        )
+    }
+
+    // Handler to update a specific extra field at an index
+    const setExtraFieldAtIndex = (
+        index: number,
+        newExtraField: {
+            name: string
+            value: string
+            type: "string" | "number" | "date"
+        }
+    ) => {
+        setExtraFields(
+            extraFields.map((field, i) => (i === index ? newExtraField : field))
         )
     }
 
@@ -116,6 +138,19 @@ const PatientActions = () => {
                     setError("Please fill out all fields.")
                     return
                 }
+            }
+
+            // If extra fields, validate them
+            for (const extraField of extraFields) {
+                if (!extraField.name || !extraField.value) {
+                    setError("Please fill out all fields.")
+                    return
+                }
+            }
+
+            // Add extra fields to patient
+            if (extraFields.length > 0) {
+                newPatient.extra = extraFields
             }
 
             // Reset error
@@ -256,6 +291,70 @@ const PatientActions = () => {
                                     <option value="active">Active</option>
                                     <option value="churned">Churned</option>
                                 </select>
+                            </div>
+
+                            {/* Extraa fields */}
+                            <h5 className="mt-2 font-medium text-sm">
+                                Extra Fields
+                            </h5>
+                            {/* Extra fields */}
+                            {extraFields.map((extraField, index) => {
+                                return (
+                                    <div
+                                        className="flex flex-col gap-2"
+                                        key={index}
+                                    >
+                                        {/* Extra field */}
+                                        <ExtraFieldGroup
+                                            key={index}
+                                            extraField={extraField}
+                                            index={index}
+                                            setExtraFieldAtIndex={
+                                                setExtraFieldAtIndex
+                                            }
+                                        />
+
+                                        {/* Remove extra field for extra fields */}
+                                        <div className="float-left">
+                                            <Button
+                                                classes="bg-transparent border-none text-sm pl-0 text-light underline text-rose-500"
+                                                text="Remove Field"
+                                                type="secondary"
+                                                icon={
+                                                    <HiMinusSm className="text-xl" />
+                                                }
+                                                onClick={() => {
+                                                    setExtraFields(
+                                                        extraFields.filter(
+                                                            (_, i) =>
+                                                                i !== index
+                                                        )
+                                                    )
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                            })}
+
+                            {/* Add new extra field button */}
+                            <div className="-mt-2">
+                                <Button
+                                    classes="bg-transparent border-none text-sm pl-0 text-light underline"
+                                    text="Add Extra Field"
+                                    type="secondary"
+                                    icon={<HiPlusSm className="text-xl" />}
+                                    onClick={() => {
+                                        setExtraFields([
+                                            ...extraFields,
+                                            {
+                                                name: "",
+                                                value: "",
+                                                type: "string",
+                                            },
+                                        ])
+                                    }}
+                                />
                             </div>
 
                             {/* Address actions */}

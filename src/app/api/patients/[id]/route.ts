@@ -35,7 +35,7 @@ export const PUT = async (
 
         // Destructure request body
         const {
-            patient: { status, name, dob, addresses, notes },
+            patient: { status, name, dob, addresses, notes, extra },
         } = await req.json()
 
         // Validate mandatory fields
@@ -90,6 +90,25 @@ export const PUT = async (
             addresses,
             notes: notes || "",
         }
+
+        // Add extra fields if they exist
+        if (extra) {
+            // Validate extra fields
+            for (const field of extra) {
+                if (!field.name || !field.value || !field.type) {
+                    return NextResponse.json(
+                        {
+                            message: "Missing mandatory fields",
+                            success: false,
+                        },
+                        { status: 400 }
+                    )
+                }
+            }
+            patient.extra = extra
+        }
+
+        console.log(patient)
 
         const patientRef = admin
             .firestore()

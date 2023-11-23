@@ -11,6 +11,7 @@ import toast from "react-hot-toast"
 import Button from "@/components/Button"
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet"
 import AddressGroup from "./AddressGroup"
+import ExtraFieldGroup from "./ExtraFieldGroup"
 import { Patient } from "@/hooks/usePatients"
 import { useAuth } from "@/contexts/AuthContext"
 import { useUpdatePatient, useDeletePatient } from "@/hooks/usePatients"
@@ -40,6 +41,13 @@ const PatientProfile = ({
         }[]
     >(patient?.addresses || [])
     const [notes, setNotes] = useState<string>(patient?.notes || "")
+    const [extraFields, setExtraFields] = useState<
+        {
+            name: string
+            value: string
+            type: "string" | "number" | "date"
+        }[]
+    >(patient?.extra || [])
 
     // Update patient mutation
     const { token } = useAuth()
@@ -55,6 +63,7 @@ const PatientProfile = ({
         setStatus(patient?.status || "inquiry")
         setAddresses(patient?.addresses || [])
         setNotes(patient?.notes || "")
+        setExtraFields(patient?.extra || [])
     }, [patient])
 
     // Handler to update a specific address at an index
@@ -72,6 +81,20 @@ const PatientProfile = ({
         )
     }
 
+    // Handler to update a specific extra field at an index
+    const setExtraFieldAtIndex = (
+        index: number,
+        newExtraField: {
+            name: string
+            value: string
+            type: "string" | "number" | "date"
+        }
+    ) => {
+        setExtraFields(
+            extraFields.map((field, i) => (i === index ? newExtraField : field))
+        )
+    }
+
     // Form submit handler
     const handleUpdatePatient = async () => {
         try {
@@ -83,6 +106,7 @@ const PatientProfile = ({
                 status,
                 addresses,
                 notes,
+                extra: extraFields,
             }
 
             // Validate patient object
@@ -112,6 +136,48 @@ const PatientProfile = ({
             ) {
                 toast.error("Please enter at least one address.")
                 return
+            }
+
+            // Validate addresses
+            for (const address of updatedPatient.addresses) {
+                // Check if street is empty
+                if (!address.street) {
+                    toast.error("Please enter a street.")
+                    return
+                }
+
+                // Check if city is empty
+                if (!address.city) {
+                    toast.error("Please enter a city.")
+                    return
+                }
+
+                // Check if state is empty
+                if (!address.state) {
+                    toast.error("Please enter a state.")
+                    return
+                }
+
+                // Check if zip is empty
+                if (!address.zip) {
+                    toast.error("Please enter a zip code.")
+                    return
+                }
+            }
+
+            // Validate extra fields
+            for (const field of extraFields) {
+                // Check if name is empty
+                if (!field.name) {
+                    toast.error("Please enter a field name.")
+                    return
+                }
+
+                // Check if value is empty
+                if (!field.value) {
+                    toast.error("Please enter a value.")
+                    return
+                }
             }
 
             // Update patient in database
@@ -262,6 +328,61 @@ const PatientProfile = ({
                             max={new Date().toISOString().split("T")[0]}
                             onChange={(e) => {
                                 setDob(new Date(e.target.value))
+                            }}
+                        />
+                    </div>
+
+                    {/* Extra details */}
+                    <h5 className="mt-2 font-bold text-sm">Extra Details</h5>
+
+                    {/* Render extra fields */}
+                    {extraFields.map((extraField, index) => {
+                        return (
+                            <div key={index} className="flex flex-col gap-2">
+                                {/* Extra Field */}
+                                <ExtraFieldGroup
+                                    key={index}
+                                    extraField={extraField}
+                                    index={index}
+                                    setExtraFieldAtIndex={setExtraFieldAtIndex}
+                                />
+
+                                {/* Remove extra field button for extra fields */}
+                                <div className="float-left">
+                                    <Button
+                                        classes="bg-transparent border-none text-sm pl-0 text-light underline text-rose-500"
+                                        text="Remove Field"
+                                        type="secondary"
+                                        icon={<HiMinusSm className="text-xl" />}
+                                        onClick={() => {
+                                            setExtraFields(
+                                                extraFields.filter(
+                                                    (_, i) => i !== index
+                                                )
+                                            )
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        )
+                    })}
+
+                    {/* Add new extra field button */}
+                    <div className="-mt-2">
+                        <Button
+                            classes="bg-transparent border-none text-sm pl-0 text-light underline"
+                            text="Add Extra Field"
+                            type="secondary"
+                            icon={<HiPlusSm className="text-xl" />}
+                            onClick={() => {
+                                setExtraFields([
+                                    ...extraFields,
+                                    {
+                                        name: "",
+                                        value: "",
+                                        type: "string",
+                                    },
+                                ])
                             }}
                         />
                     </div>

@@ -138,7 +138,7 @@ export const POST = async (req: Request) => {
 
         // Destructure request body
         const {
-            patient: { status, name, dob, addresses, notes },
+            patient: { status, name, dob, addresses, notes, extra },
         } = await req.json()
 
         // Validate mandatory fields
@@ -196,6 +196,41 @@ export const POST = async (req: Request) => {
             notes: notes || "",
         }
 
+        // Set extra fields if they exist
+        if (extra && extra.length > 0) {
+            // Validate extra fields
+            for (const field of extra) {
+                if (!field.name || !field.value || !field.type) {
+                    return NextResponse.json(
+                        {
+                            message: "Missing mandatory fields",
+                            success: false,
+                        },
+                        { status: 400 }
+                    )
+                }
+                if (
+                    field.type !== "string" &&
+                    field.type !== "number" &&
+                    field.type !== "date"
+                ) {
+                    return NextResponse.json(
+                        {
+                            message: "Invalid type",
+                            success: false,
+                        },
+                        { status: 400 }
+                    )
+                }
+            }
+            // Set extra fields
+            patient = {
+                ...patient,
+                extra,
+            }
+        }
+
+        // Insert patient into database
         const patientRef = admin
             .firestore()
             .collection("users")
@@ -213,7 +248,6 @@ export const POST = async (req: Request) => {
             { status: 200 }
         )
     } catch (error) {
-        console.log(error)
         return NextResponse.json(
             {
                 message: "Internal Server Error",

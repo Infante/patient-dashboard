@@ -25,6 +25,11 @@ export type Patient = {
         zip: string
     }[]
     notes: string
+    extra?: {
+        name: string
+        value: string
+        type: "string" | "number" | "date"
+    }[]
 }
 
 // API requests
