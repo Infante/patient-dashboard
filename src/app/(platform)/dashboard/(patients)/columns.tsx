@@ -146,6 +146,8 @@ export const columns: ColumnDef<Patient>[] = [
         header: ({ column }) => <>Extra Fields</>,
         cell: ({ row }) => {
             let extraFields = row.original.extra ? row.original.extra : []
+            if (extraFields.length === 0) return "N/A"
+
             return (
                 <HoverCard>
                     <HoverCardTrigger className="flex flex-row items-center gap-2">
