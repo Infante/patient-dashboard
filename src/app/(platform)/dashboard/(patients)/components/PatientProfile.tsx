@@ -5,12 +5,15 @@
 // Imports
 import { useEffect, useState } from "react"
 import { HiPlusSm, HiMinusSm } from "react-icons/hi"
+import toast from "react-hot-toast"
 
 // Import components and types
 import Button from "@/components/Button"
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet"
 import AddressGroup from "./AddressGroup"
 import { Patient } from "@/hooks/usePatients"
+import { useAuth } from "@/contexts/AuthContext"
+import { useUpdatePatient, useDeletePatient } from "@/hooks/usePatients"
 
 // Patient Profile component
 const PatientProfile = ({
@@ -38,18 +41,21 @@ const PatientProfile = ({
     >(patient?.addresses || [])
     const [notes, setNotes] = useState<string>(patient?.notes || "")
 
+    // Update patient mutation
+    const { token } = useAuth()
+    const { mutateAsync: updatePatient, isPending: isPendingEdit } =
+        useUpdatePatient(token)
+    const { mutateAsync: deletePatient, isPending: isPendingDelete } =
+        useDeletePatient(token)
+
     // On patient change, update form states
     useEffect(() => {
-        setError("")
         setName(patient?.name || "")
         setDob(patient?.dob || new Date())
         setStatus(patient?.status || "inquiry")
         setAddresses(patient?.addresses || [])
         setNotes(patient?.notes || "")
     }, [patient])
-
-    // Error States
-    const [error, setError] = useState<string>("")
 
     // Handler to update a specific address at an index
     const setAddressAtIndex = (
@@ -68,48 +74,74 @@ const PatientProfile = ({
 
     // Form submit handler
     const handleUpdatePatient = async () => {
-        // Create patient object
-        const updatedPatient: Patient = {
-            ...patient,
-            name,
-            dob,
-            status,
-            addresses,
-            notes,
+        try {
+            // Create patient object
+            const updatedPatient: Patient = {
+                ...patient,
+                name,
+                dob,
+                status,
+                addresses,
+                notes,
+            }
+
+            // Validate patient object
+
+            // Check if patient name is empty
+            if (!updatedPatient.name) {
+                toast.error("Please enter a patient name.")
+                return
+            }
+
+            // Check if patient dob is empty
+            if (!updatedPatient.dob) {
+                toast.error("Please select a birthday.")
+                return
+            }
+
+            // Check if patient status is empty
+            if (!updatedPatient.status) {
+                toast.error("Please select a status.")
+                return
+            }
+
+            // Check if patient addresses is empty
+            if (
+                !updatedPatient.addresses ||
+                updatedPatient.addresses.length === 0
+            ) {
+                toast.error("Please enter at least one address.")
+                return
+            }
+
+            // Update patient in database
+            await updatePatient(updatedPatient)
+
+            toast.success("Patient updated successfully.")
+        } catch (error) {
+            toast.error("Error updating patient.")
         }
+    }
 
-        // Validate patient object
+    const handleDeletePatient = async () => {
+        try {
+            if (!patient || !patient.id) return
 
-        // Check if patient name is empty
-        if (!updatedPatient.name) {
-            setError("Please enter the name of the patient.")
-            return
+            // Delete patient in database
+            const confirmed = window.confirm(
+                "Are you sure you want to delete this patient?"
+            )
+
+            if (!confirmed) return
+
+            deletePatient(patient)
+
+            setIsOpen(false)
+
+            toast.success("Patient deleted successfully.")
+        } catch (error) {
+            toast.error("Error deleting patient.")
         }
-
-        // Check if patient dob is empty
-        if (!updatedPatient.dob) {
-            setError("Please select a birthday.")
-            return
-        }
-
-        // Check if patient status is empty
-        if (!updatedPatient.status) {
-            setError("Please select a patient status.")
-            return
-        }
-
-        // Check if patient addresses is empty
-        if (
-            !updatedPatient.addresses ||
-            updatedPatient.addresses.length === 0
-        ) {
-            setError("Please enter at least one address.")
-            return
-        }
-
-        setError("")
-        // Update patient in database
-        console.log(updatedPatient)
     }
 
     // Render
@@ -122,7 +154,7 @@ const PatientProfile = ({
                 <SheetHeader>
                     <div className="py-4 flex flex-row items-center space-x-4">
                         {/* Profile Image */}
-                        <div className="w-[60px] h-[60px] rounded-md bg-[#ED762F] flex items-center justify-center">
+                        <div className="w-[60px] h-[60px] rounded-full bg-[#ED762F] flex items-center justify-center">
                             <span className="text-white font-bold text-3xl">
                                 {name
                                     ?.split(" ")
@@ -148,11 +180,25 @@ const PatientProfile = ({
                         </div>
 
                         <div className="flex-1 flex justify-end">
+                            {/* Delete */}
+                            <Button
+                                classes="max-h-[40px] px-6 text-sm mr-2"
+                                text="Delete"
+                                type="secondary"
+                                onClick={() => {
+                                    // Delete patient
+                                    handleDeletePatient()
+                                }}
+                                loading={isPendingDelete || isPendingEdit}
+                            />
+
+                            {/* Save Changes Button */}
                             <Button
                                 classes="max-h-[40px] px-6 text-sm"
                                 text="Save Changes"
                                 type="primary"
                                 onClick={handleUpdatePatient}
+                                loading={isPendingEdit || isPendingDelete}
                             />
                         </div>
                     </div>
@@ -210,7 +256,9 @@ const PatientProfile = ({
                             className={`flex-1 p-2 text-sm rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                             type="date"
                             name="dob"
-                            value={dob.toISOString().split("T")[0]}
+                            value={
+                                new Date(dob).toISOString().split("T")[0] || ""
+                            }
                             max={new Date().toISOString().split("T")[0]}
                             onChange={(e) => {
                                 setDob(new Date(e.target.value))

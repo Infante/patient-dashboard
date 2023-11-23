@@ -54,7 +54,6 @@ const PatientActions = () => {
         mutateAsync: addPatient,
         error: addError,
         isPending,
-        isSuccess,
     } = useAddPatient(token)
 
     // Error state
@@ -123,7 +122,7 @@ const PatientActions = () => {
             setError(null)
 
             // Send patient to API
-            addPatient(newPatient)
+            await addPatient(newPatient)
 
             // Reset form
             setFirstName("")

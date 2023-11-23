@@ -14,6 +14,7 @@ import ky from "ky-universal"
 
 // Types
 export type Patient = {
+    id?: string
     status: "inquiry" | "churned" | "active" | "onboarding"
     name: string
     dob: Date
@@ -70,10 +71,25 @@ const updatePatient = async (
     token: string
 ): Promise<Patient> => {
     return ky
-        .put(`/api/patients`, {
+        .put(`/api/patients/${patient.id}`, {
             json: {
                 patient,
             },
+            headers: {
+                authorization: `Bearer ${token}`,
+                "content-type": "application/json",
+            },
+        })
+        .json()
+}
+
+// DELETE /api/patients/:id
+const deletePatient = async (
+    patient: Patient,
+    token: string
+): Promise<Patient> => {
+    return ky
+        .delete(`/api/patients/${patient.id}`, {
             headers: {
                 authorization: `Bearer ${token}`,
                 "content-type": "application/json",
@@ -139,4 +155,23 @@ const useUpdatePatient = (token: string) => {
     })
 }
 
-export { usePatients, fetchPatients, useAddPatient, useUpdatePatient }
+// Delete patient hook
+const useDeletePatient = (token: string) => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: (patient: Patient) => deletePatient(patient, token),
+        retry: 3,
+        onSuccess: () => {
+            // Invalidate patients cache
+            queryClient.invalidateQueries({ queryKey: ["patients"] })
+        },
+    })
+}
+
+export {
+    usePatients,
+    fetchPatients,
+    useAddPatient,
+    useUpdatePatient,
+    useDeletePatient,
+}

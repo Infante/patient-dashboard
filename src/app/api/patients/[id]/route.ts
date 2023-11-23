@@ -11,11 +11,16 @@ import { Patient, authenticated } from "../route"
 // Authenticate user using Firebase Token and Admin SDK
 // Update patient in users patients collection
 // Return updated patient
-export const PUT = async (req: NextApiRequest) => {
+export const PUT = async (
+    req: Request,
+    { params }: { params: { id: string } }
+) => {
     try {
+        // Destructure request params
+        const { id } = params
+
         // Authenticate user using Firebase Token and Admin SDK
         const user = await authenticated()
-        const { id } = req.query as { id: string } // Patient ID
 
         // If user is not authenticated return error
         if (!user) {
@@ -29,18 +34,12 @@ export const PUT = async (req: NextApiRequest) => {
         }
 
         // Destructure request body
-        const { status, name, dob, addresses, notes, extra } =
-            req.body as Patient
+        const {
+            patient: { status, name, dob, addresses, notes },
+        } = await req.json()
 
         // Validate mandatory fields
-        if (
-            !status ||
-            !name ||
-            !dob ||
-            !addresses ||
-            addresses.length === 0 ||
-            !notes
-        ) {
+        if (!status || !name || !dob || !addresses || addresses.length === 0) {
             return NextResponse.json(
                 {
                     message: "Missing mandatory fields",
@@ -84,11 +83,12 @@ export const PUT = async (req: NextApiRequest) => {
 
         // Update patient in users patients collection
         let patient: Patient = {
+            id,
             status,
             name,
             dob,
             addresses,
-            notes,
+            notes: notes || "",
         }
 
         const patientRef = admin
@@ -122,11 +122,16 @@ export const PUT = async (req: NextApiRequest) => {
 // Authenticate user using Firebase Token and Admin SDK
 // Delete patient in users patients collection
 // Return success
-export const DELETE = async (req: NextApiRequest) => {
+export const DELETE = async (
+    req: Request,
+    { params }: { params: { id: string } }
+) => {
     try {
+        // Destructure request params
+        const { id } = params
+
         // Authenticate user using Firebase Token and Admin SDK
         const user = await authenticated()
-        const { id } = req.query as { id: string } // Patient ID
 
         // If user is not authenticated return error
         if (!user) {

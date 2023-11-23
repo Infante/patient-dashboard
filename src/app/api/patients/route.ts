@@ -7,6 +7,7 @@ import { headers } from "next/headers"
 
 // Patient Data Type
 export type Patient = {
+    id: string
     // Status of patient
     status: "inquiry" | "churned" | "active" | "onboarding"
     // Patients name
@@ -184,10 +185,13 @@ export const POST = async (req: Request) => {
         }
 
         // Create new patient in users patients collection
+        // Create patient UID
+        const id = admin.firestore().collection("patients").doc().id
         let patient: Patient = {
+            id,
             status,
             name,
-            dob: new Date(dob),
+            dob: dob,
             addresses,
             notes: notes || "",
         }
@@ -197,7 +201,8 @@ export const POST = async (req: Request) => {
             .collection("users")
             .doc(user.uid)
             .collection("patients")
-        const newPatientRef = await patientRef.add(patient)
+
+        await patientRef.doc(id).set(patient)
 
         // Return success
         return NextResponse.json(

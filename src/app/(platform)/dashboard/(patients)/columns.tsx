@@ -19,31 +19,6 @@ import { Patient } from "@/hooks/usePatients"
 
 // Columns definitions for the patient table
 export const columns: ColumnDef<Patient>[] = [
-    // Select Column
-    {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) =>
-                    table.toggleAllPageRowsSelected(!!value)
-                }
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
     // Name Column
     {
         accessorKey: "name",
@@ -95,6 +70,32 @@ export const columns: ColumnDef<Patient>[] = [
                 </span>
             </div>
         ),
+        enableSorting: true,
+    },
+    //
+
+    // Age Column
+    {
+        accessorKey: "age",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                className="p-0 text-light font-normal"
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+            >
+                Age <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => {
+            // DOB
+            const dob = new Date(row.original.dob)
+            const age = Math.floor(
+                (new Date().getTime() - dob.getTime()) / 31557600000
+            )
+            return <div>{age}</div>
+        },
         enableSorting: true,
     },
     // Addresses Column
