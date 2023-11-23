@@ -85,16 +85,40 @@ export default function Analytics() {
                     value={analytics ? analytics.totalPatients.toString() : "0"}
                 />
                 <AnalyticCard
-                    title="Total Data"
-                    value={analytics ? analytics.totalPatients.toString() : "0"}
+                    title="
+                        Active
+                    "
+                    value={
+                        analytics
+                            ? analytics.statusCounts.active.toString()
+                            : "0"
+                    }
                 />
                 <AnalyticCard
-                    title="Total Data Points"
-                    value={analytics ? analytics.totalPatients.toString() : "0"}
+                    title="
+                        Inquiry
+                    "
+                    value={
+                        analytics
+                            ? analytics.statusCounts.inquiry.toString()
+                            : "0"
+                    }
                 />
                 <AnalyticCard
-                    title="Total Data Points"
-                    value={analytics ? analytics.totalPatients.toString() : "0"}
+                    title="Churned"
+                    value={
+                        analytics
+                            ? analytics.statusCounts.churned.toString()
+                            : "0"
+                    }
+                />
+                <AnalyticCard
+                    title="Onboarding"
+                    value={
+                        analytics
+                            ? analytics.statusCounts.onboarding.toString()
+                            : "0"
+                    }
                 />
             </div>
 
