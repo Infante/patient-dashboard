@@ -7,6 +7,7 @@
 import { columns } from "./Columns"
 import DataTable from "./components/DataTable"
 import PatientActions from "./components/PatientActions"
+import Spinner from "@/components/Spinner"
 import { usePatients } from "@/hooks/usePatients"
 import { useAuth } from "@/contexts/AuthContext"
 
@@ -32,10 +33,18 @@ export default function Patients() {
 
             <div className="relative py-4">
                 {/* On loading display loading animation */}
-                {isLoading ? <div>Loading...</div> : null}
+                {isLoading ? (
+                    <div className="absolute w-full h-full flex items-center justify-center">
+                        <Spinner />{" "}
+                    </div>
+                ) : null}
 
                 {/* On error display error */}
-                {isError ? <div>Error...</div> : null}
+                {isError ? (
+                    <div className="py-4 text-sm text-rose-500">
+                        Network request error.. Please try again!
+                    </div>
+                ) : null}
 
                 {/* Render datatable with columns and data */}
                 {data ? <DataTable columns={columns} data={data} /> : null}

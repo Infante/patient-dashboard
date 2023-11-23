@@ -6,10 +6,10 @@
 import { useMemo } from "react"
 
 // Import components hooks
-import AnalyticCard from "./components/AnalyticCard"
-import AddressCharts from "./components/AddressCharts"
-import { usePatients, Patient } from "@/hooks/usePatients"
 import { useAuth } from "@/contexts/AuthContext"
+import { Patient, usePatients } from "@/hooks/usePatients"
+import AddressCharts from "./components/AddressCharts"
+import AnalyticCard from "./components/AnalyticCard"
 
 // Analytics Page
 export default function Analytics() {

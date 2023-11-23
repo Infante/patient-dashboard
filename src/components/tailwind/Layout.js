@@ -32,7 +32,7 @@ export default function Layout({ children }) {
     const pathname = usePathname()
 
     return (
-        <>
+        <div className="">
             <Disclosure as="nav" className="bg-[#141414]">
                 {({ open }) => (
                     <>
@@ -205,6 +205,6 @@ export default function Layout({ children }) {
             <div className="flex max-w-7xl py-12 px-4 sm:px-6 lg:px-8 mx-auto">
                 {children}
             </div>
-        </>
+        </div>
     )
 }
