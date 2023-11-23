@@ -6,7 +6,7 @@ import admin from "@/lib/firebaseAdmin"
 import { headers } from "next/headers"
 
 // Patient Data Type
-export type Patient = {
+type Patient = {
     id: string
     // Status of patient
     status: "inquiry" | "churned" | "active" | "onboarding"
@@ -34,7 +34,7 @@ export type Patient = {
 }
 
 // Authenticated middleware function
-export const authenticated = async () => {
+const authenticated = async () => {
     // Get token from request headers
     const headersInstance = headers()
     const authorization = headersInstance.get("authorization")
