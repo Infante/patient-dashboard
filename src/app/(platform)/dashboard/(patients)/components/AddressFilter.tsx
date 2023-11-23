@@ -53,8 +53,8 @@ const statuses: Status[] = [
         icon: ArrowUpCircle,
     },
     {
-        value: "churnned",
-        label: "Churnned",
+        value: "churned",
+        label: "churned",
         icon: XCircle,
     },
 ]

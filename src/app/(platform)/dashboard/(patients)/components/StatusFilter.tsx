@@ -41,8 +41,8 @@ const statuses: Status[] = [
         label: "Active",
     },
     {
-        value: "churnned",
-        label: "Churnned",
+        value: "churned",
+        label: "Churned",
     },
 ]
 

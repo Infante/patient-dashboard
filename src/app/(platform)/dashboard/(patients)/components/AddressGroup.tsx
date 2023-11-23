@@ -64,7 +64,7 @@ const AddressGroup = ({
             <div className="flex flex-col md:flex-row md:items-center gap-2">
                 <label className="text-sm w-20">State</label>
                 <select
-                    className={`flex-1 p-2 text-base rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
+                    className={`flex-1 p-2 text-sm rounded-md border border-stroke focus:outline-none focus:ring-2 focus:ring-[#ED762F]/30 focus:border-[#ED762F]`}
                     name="state"
                     value={address.state}
                     onChange={(e) => updateField("state", e.target.value)}

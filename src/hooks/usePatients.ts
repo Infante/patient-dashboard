@@ -98,15 +98,6 @@ const deletePatient = async (
         .json()
 }
 
-// Analytics computation
-// const computeAnalytics = (patients: Patient[]) => {
-//     const statusCounts = /* logic to count patients per status */;
-//     const totalPatients = patients.length;
-//     const cityCounts = /* logic to count patients by city */;
-
-//     return { statusCounts, totalPatients, cityCounts };
-// };
-
 // Hooks
 
 // Get patients hook
@@ -121,12 +112,6 @@ const usePatients = (token: string): UseQueryResult<Patient[], unknown> => {
         enabled: !!token, // Only run the query if the token exists
     })
 }
-
-// Patients analytics hook
-// const usePatientAnalytics = (limit: number) => {
-//     const { data: patients } = usePatients(limit)
-//     return useMemo(() => computeAnalytics(patients), [patients])
-// }
 
 // Add patient hook
 const useAddPatient = (token: string) => {
