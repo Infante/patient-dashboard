@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Patient Management Dashboard
 
-## Getting Started
+A streamlined solution for healthcare providers, focusing on efficient patient data management.
 
-First, run the development server:
+## Problem Statement
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Providers are frustrated with current patient management dashboards and seek an improved system for handling essential patient information, including names, dates of birth, statuses, multiple addresses, and custom data fields.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Solution Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This web-based application facilitates:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Analytics
 
-## Learn More
+-   **Total Patient Count**: A quick view of the total number of patients.
+-   **Patients per Status**: Breakdown of patients according to statuses like Inquiry, Onboarding, Active, and Churned.
+-   **Address Visualization**: Insightful display of patients' geographical distribution.
 
-To learn more about Next.js, take a look at the following resources:
+### Patient Management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   **Field-Based Filtering**: Enables sorting and filtering by various patient data fields.
+-   **Quick Search**: Easy search functionality for accessing patient records.
+-   **Comprehensive Record Display**: Detailed presentation of patient records, including names, DOB, status, addresses, and additional custom fields.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Patient Profiles
 
-## Deploy on Vercel
+-   **Detailed Patient Overviews**: In-depth profiles for each patient.
+-   **Insurance Information**: Dedicated section for insurance card details.
+-   **Document Uploading**: Capability for uploading and storing patient-related documents.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Technical Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   **Next.js**: Facilitates rapid development of both frontend and backend.
+-   **Firebase**: Chosen for its flexibility with dynamic data, such as custom fields per patient, and ease of authentication integration.
+-   **React-Query and React-Table**: Used for efficient data handling, caching, and advanced table functionalities.
+
+## Development Insights
+
+### Scheduling Feature Implementation (Future Enhancement)
+
+-   **Calendar Integration**: A calendar view populated with scheduled sessions, sortable and filterable by patient.
+-   **Backend Design**: Creation of a collection within each user's document to store session data, including time, date, session length, patient reference, and address.
+
+### Future Improvements
+
+#### Enhanced City Filtering
+
+-   **Current Approach**: Cities are currently treated as strings within a single field, which can lead to inconsistencies and limited filtering capabilities.
+-   **Improvement Strategy**: Adopt geospatial data and normalized city naming conventions to enhance the accuracy and efficiency of city-based filtering.
+-   **Impact**: This will significantly improve data sorting and analysis based on geographical locations, making the system more intuitive and robust for large datasets.
+
+#### Dynamic Data Table
+
+-   **Current Limitation**: The extra data option for custom fields is basic and static.
+-   **Desired Feature**: Implementing a dynamic table where users can add, rearrange, and filter by custom data fields.
+-   **Benefits**: This will greatly enhance the flexibility and usability of the dashboard, allowing for personalized and detailed patient data management.
