@@ -39,7 +39,6 @@ export function CityFilter({
     useEffect(() => {
         // If a city is selected, call the onSelectStatus function
         if (selectedCity) {
-            console.log(selectedCity)
             onSelectStatus(selectedCity.value)
         }
         // If no city is selected or "all" is selected, call the onSelectStatus function with a value of "all"
