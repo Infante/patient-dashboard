@@ -9,7 +9,6 @@ import { ArrowUpDown } from "lucide-react"
 
 // Import components and types
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
     HoverCard,
     HoverCardContent,

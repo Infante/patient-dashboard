@@ -1,9 +1,60 @@
 // Path: /api/patients/:id
 // Description: API Route for Patient specific actions such as update and delete
-import { NextResponse } from "next/server"
-import { NextApiRequest } from "next"
 import admin from "@/lib/firebaseAdmin"
-import { Patient, authenticated } from "../route"
+import { NextResponse } from "next/server"
+import { headers } from "next/headers"
+
+// Patient Data Type
+type Patient = {
+    id: string
+    // Status of patient
+    status: "inquiry" | "churned" | "active" | "onboarding"
+    // Patients name
+    name: string
+    // Date of birth
+    dob: Date
+    // Addresses of patient
+    addresses: {
+        street: string
+        city: string
+        state: string
+        zip: string
+    }[]
+    // Notes about patient
+    notes: string
+    // Extra information about patient entered by user
+    // can be used for things like insurance information
+    // either string, number, or date
+    extra?: {
+        name: string
+        value: string
+        type: "string" | "number" | "date"
+    }[]
+}
+
+// Authenticated middleware function
+const authenticated = async () => {
+    // Get token from request headers
+    const headersInstance = headers()
+    const authorization = headersInstance.get("authorization")
+    const token = authorization?.replace("Bearer ", "")
+
+    // If no token return false
+    if (!token) {
+        return false
+    }
+
+    // Authenticate user using Firebase Token and Admin SDK
+    const user = await admin.auth().verifyIdToken(token)
+
+    // If user is not authenticated return error
+    if (!user) {
+        return false
+    }
+
+    // Return the user
+    return user
+}
 
 // API Routes
 
